@@ -1,0 +1,18 @@
+{
+  "v": 3,
+  "createdOnFiles": { "v": 1, "at": "2026-10-20T22:15:00Z" },
+  "title": "Exquisite Cleaners Mockups",
+  "launch": { "view": "canvas" },
+  "pages": [],
+  "boards": {
+    "Main.dc.html": { "x": 0, "y": 0, "w": 1440, "h": 5900, "title": "Home · Desktop", "expand": "fill", "is_interactive": true },
+    "Mobile.dc.html": { "x": 1520, "y": 0, "w": 390, "h": 2900, "title": "Home · Mobile", "is_interactive": true },
+    "Chatbot.dc.html": { "x": 1990, "y": 0, "w": 390, "h": 844, "title": "Chatbot · Mobile", "is_interactive": true },
+    "Brand.dc.html": { "x": 2460, "y": 0, "w": 880, "h": 760, "title": "Brand & 3D motion sheet" }
+  },
+  "order": ["Main.dc.html", "Mobile.dc.html", "Chatbot.dc.html", "Brand.dc.html"],
+  "notes": {
+    "head": { "x": 0, "y": -300, "text": "Exquisite Cleaners — Direction A · Cinematic Luxe", "kind": "title1", "maxW": 3340 }
+  },
+  "designSystems": []
+}

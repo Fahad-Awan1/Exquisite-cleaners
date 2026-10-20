@@ -1,0 +1,31 @@
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#0b1a33">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <meta property="og:site_name" content="Exquisite Cleaners">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="/images/og-image.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Great+Vibes&family=Montserrat:wght@400;500;600&display=swap">
+    <style>
+      /* First-paint styles so a page never flashes unstyled while the stylesheet loads */
+      /* :where() keeps these at zero specificity, so the real stylesheet always wins once loaded */
+      :where(html, body) { background: #0b1a33; color: #e8ecf4; margin: 0; }
+      :where(.preloader) { position: fixed; inset: 0; z-index: 900; background: #071226; }
+      :where(.wipe) { position: fixed; inset: 0; z-index: 850; pointer-events: none; }
+      :where(html.returning .wipe__panel) { position: absolute; inset: 0; background: #071226; }
+      :where(html.returning .preloader) { display: none; }
+      :where(.preloader, .wipe) :where(svg, img) { width: 84px; height: 84px; }
+      :where(.drawer, .chat__panel) { visibility: hidden; }
+      :where(.cursor) { opacity: 0; }
+      :where(.skip-link) { position: fixed; top: -60px; }
+    </style>
+    <link rel="stylesheet" href="/src/css/main.css">
+    <script>
+      document.documentElement.classList.add('js');
+      try { if (sessionStorage.getItem('ec-visited')) document.documentElement.classList.add('returning'); } catch (e) {}
+    </script>
+    <script type="module" src="/src/js/main.js"></script>

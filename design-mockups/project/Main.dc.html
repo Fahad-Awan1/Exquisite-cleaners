@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Exquisite Cleaners — Home</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&amp;family=Great+Vibes&amp;family=Montserrat:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0b1a33}
+a{color:#e9c97a}a:hover{color:#f3d98b}
+.ec *{box-sizing:border-box}
+.hero{background:linear-gradient(100deg,rgba(8,20,42,.96) 0%,rgba(11,26,51,.86) 42%,rgba(11,26,51,.35) 100%),url(/_blob/c90d700a7adb313f8ed926b00f737f02) center/cover no-repeat}
+.gold-text{background:linear-gradient(100deg,#a87f2c 0%,#f3d98b 45%,#c9a24a 70%,#a87f2c 100%);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 6s linear infinite}
+@keyframes shine{to{background-position:200% center}}
+.gold-btn{background:linear-gradient(135deg,#f3d98b,#c9a24a 55%,#a87f2c);color:#0b1a33;transition:transform .3s,box-shadow .3s}
+.gold-btn:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(201,162,74,.35);color:#0b1a33}
+.ghost-btn{transition:background .3s}.ghost-btn:hover{background:rgba(243,217,139,.12);color:#f3d98b}
+.stage{perspective:1200px}
+.emblem{transform-style:preserve-3d;animation:tilt 9s ease-in-out infinite}
+@keyframes tilt{0%,100%{transform:rotateY(-14deg) rotateX(6deg)}50%{transform:rotateY(14deg) rotateX(-4deg)}}
+.ring{animation:spin 18s linear infinite}
+.ring2{animation:spin 26s linear infinite reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+.bubble{background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.9),rgba(255,255,255,.15) 35%,rgba(180,210,255,.12) 60%,rgba(243,217,139,.35) 100%);border:1px solid rgba(255,255,255,.35);animation:float 7s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-22px)}}
+.spark{animation:twinkle 2.6s ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:.25;transform:scale(.7)}50%{opacity:1;transform:scale(1.1)}}
+.tilt{transition:transform .6s cubic-bezier(.2,.8,.2,1),box-shadow .6s;transform:perspective(1000px) rotateX(0) rotateY(0)}
+.tilt:hover{transform:perspective(1000px) rotateX(5deg) rotateY(-7deg) translateY(-8px);box-shadow:0 30px 60px rgba(11,26,51,.35),0 0 0 1px rgba(201,162,74,.6)}
+.tilt img{transition:transform .8s}.tilt:hover img{transform:scale(1.07)}
+.grime{filter:sepia(.55) saturate(.45) brightness(.62) contrast(1.15)}
+.dust{background:radial-gradient(circle at 20% 70%,rgba(90,70,40,.35),transparent 30%),radial-gradient(circle at 70% 40%,rgba(90,70,40,.3),transparent 25%),radial-gradient(circle at 45% 85%,rgba(60,50,30,.4),transparent 28%)}
+.slider{-webkit-appearance:none;appearance:none;background:transparent;cursor:ew-resize}
+.slider::-webkit-slider-thumb{-webkit-appearance:none;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#f3d98b,#c9a24a);border:3px solid #fff;box-shadow:0 6px 20px rgba(0,0,0,.35)}
+.slider::-moz-range-thumb{width:56px;height:56px;border-radius:50%;background:#d9b968;border:3px solid #fff}
+.chip{transition:background .3s,color .3s,border-color .3s}
+.chip:hover{border-color:#c9a24a}
+.marquee{animation:scroll 30s linear infinite}
+@keyframes scroll{to{transform:translateX(-50%)}}
+.arc{stroke-dasharray:6 8;animation:dash 3s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-56}}
+.pulse{animation:pulse 2.2s ease-out infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(243,217,139,.55)}100%{box-shadow:0 0 0 22px rgba(243,217,139,0)}}
+@media (prefers-reduced-motion:reduce){.emblem,.ring,.ring2,.bubble,.spark,.marquee,.arc,.gold-text,.pulse{animation:none}}
+@media (max-width:860px){.navlinks{display:none !important}.hero-h1{font-size:46px !important}.h2{font-size:38px !important}.hide-sm{display:none !important}}
+</style>
+</helmet>
+<div class="ec" style="width: 100%; min-height: 5900px; background: #0b1a33; color: #e8ecf4; font-family: 'Montserrat', system-ui, sans-serif; position: relative; overflow: hidden">
+
+  <!-- HERO -->
+  <section class="hero" style="position: relative; min-height: 900px; display: flex; flex-direction: column">
+    <header style="display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 22px clamp(16px, 4vw, 64px); border-bottom: 1px solid rgba(243,217,139,.18); background: rgba(8,20,42,.35); backdrop-filter: blur(10px)">
+      <a href="#top" style="display: flex; align-items: center; gap: 12px; text-decoration: none">
+        <svg viewBox="0 0 64 64" width="48" height="48" aria-hidden="true"><defs><linearGradient id="gA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f3d98b"></stop><stop offset=".55" stop-color="#c9a24a"></stop><stop offset="1" stop-color="#a87f2c"></stop></linearGradient></defs><circle cx="32" cy="32" r="29" fill="none" stroke="url(#gA)" stroke-width="1.6"></circle><text x="31" y="42" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="29" font-weight="700" fill="url(#gA)">EC</text><path d="M11 41 C 24 32, 38 31, 53 27" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round"></path><path d="M50 9 l1.4 3.8 3.8 1.4 -3.8 1.4 -1.4 3.8 -1.4 -3.8 -3.8 -1.4 3.8 -1.4z" fill="url(#gA)"></path></svg>
+        <span style="display: flex; flex-direction: column; line-height: 1">
+          <span style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; letter-spacing: 3px; color: #e9c97a">EXQUISITE</span>
+          <span style="font-size: 10px; letter-spacing: 6px; color: #d9c08a; margin-top: 4px">CLEANERS</span>
+        </span>
+      </a>
+      <nav class="navlinks" aria-label="Main" style="display: flex; gap: 30px; font-size: 13px; letter-spacing: 1px">
+        <a href="#top" style="color: #f3d98b; text-decoration: none">Home</a>
+        <a href="#services" style="color: #e8ecf4; text-decoration: none">Services</a>
+        <a href="#care" style="color: #e8ecf4; text-decoration: none">Family Care</a>
+        <a href="#services" style="color: #e8ecf4; text-decoration: none">Airbnb</a>
+        <a href="#services" style="color: #e8ecf4; text-decoration: none">Maintenance</a>
+        <a href="#about" style="color: #e8ecf4; text-decoration: none">About</a>
+        <a href="#contact" style="color: #e8ecf4; text-decoration: none">Contact</a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 12px">
+        <span class="hide-sm" style="font-size: 12px; color: #d9c08a; border: 1px solid rgba(243,217,139,.35); padding: 8px 12px; border-radius: 999px">{{cur}}</span>
+        <a href="#contact" class="gold-btn" style="text-decoration: none; padding: 13px 22px; border-radius: 999px; font-size: 13px; font-weight: 600; letter-spacing: .5px">Book a Clean</a>
+      </div>
+    </header>
+
+    <div style="flex-grow: 1; display: flex; flex-wrap: wrap; align-items: center; gap: 40px; max-width: 1280px; width: 100%; margin: 0 auto; padding: 60px clamp(16px, 4vw, 64px) 90px">
+      <div style="flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 22px">
+        <span style="font-size: 12px; letter-spacing: 5px; color: #d9c08a">HOMES  ·  FAMILIES  ·  BUSINESSES  —  GHANA</span>
+        <h1 class="hero-h1" style="margin: 0; font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 76px; line-height: 1.02; color: #ffffff">Spotless spaces,<br><span class="gold-text">cared for like our own.</span></h1>
+        <span style="font-family: 'Great Vibes', cursive; font-size: 46px; color: #e9c97a; line-height: 1">You do, we clean</span>
+        <p style="margin: 0; max-width: 520px; font-size: 16px; line-height: 1.75; color: #c9d2e3">Premium residential, commercial and Airbnb cleaning, plus trusted home care for families in Ghana and abroad. One team on the ground, looking after what matters to you.</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 14px; margin-top: 8px">
+          <a href="#contact" class="gold-btn" style="text-decoration: none; padding: 17px 30px; border-radius: 999px; font-weight: 600; font-size: 14px">Book a Clean</a>
+          <a href="#contact" class="ghost-btn" style="text-decoration: none; padding: 16px 28px; border-radius: 999px; font-weight: 500; font-size: 14px; color: #f3d98b; border: 1px solid rgba(243,217,139,.55); display: flex; align-items: center; gap: 10px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 1-13.4 7.8L3 21l1.3-4.4A9 9 0 1 1 21 12z"></path></svg>
+            WhatsApp us
+          </a>
+        </div>
+      </div>
+
+      <div class="stage" style="flex: 1 1 420px; min-width: 0; height: 520px; position: relative; display: flex; align-items: center; justify-content: center">
+        <div class="ring" style="position: absolute; width: 470px; height: 470px; border-radius: 50%; border: 1px dashed rgba(243,217,139,.35)"></div>
+        <div class="ring2" style="position: absolute; width: 400px; height: 400px; border-radius: 50%; border: 1px solid rgba(243,217,139,.18); border-top-color: #e9c97a"></div>
+        <div class="emblem" style="position: relative; width: 330px; height: 330px; border-radius: 50%; overflow: hidden; box-shadow: 0 40px 90px rgba(0,0,0,.55), 0 0 0 2px rgba(243,217,139,.55), inset 0 0 40px rgba(243,217,139,.2)">
+          <img src="/_blob/ec62a81c7f7eb3c7f557e952304f6f35" alt="Exquisite Cleaners EC emblem" style="width: 140%; margin: -6% 0 0 -20%; display: block">
+        </div>
+        <div class="bubble" style="position: absolute; width: 74px; height: 74px; border-radius: 50%; top: 40px; left: 12%"></div>
+        <div class="bubble" style="position: absolute; width: 40px; height: 40px; border-radius: 50%; bottom: 70px; left: 6%; animation-delay: -2s"></div>
+        <div class="bubble" style="position: absolute; width: 56px; height: 56px; border-radius: 50%; bottom: 40px; right: 10%; animation-delay: -4s"></div>
+        <div class="bubble" style="position: absolute; width: 26px; height: 26px; border-radius: 50%; top: 90px; right: 14%; animation-delay: -1s"></div>
+        <svg class="spark" width="34" height="34" viewBox="0 0 24 24" style="position: absolute; top: 70px; right: 24%" aria-hidden="true"><path d="M12 1l2.6 8.4L23 12l-8.4 2.6L12 23l-2.6-8.4L1 12l8.4-2.6z" fill="#f3d98b"></path></svg>
+        <svg class="spark" width="20" height="20" viewBox="0 0 24 24" style="position: absolute; bottom: 120px; left: 22%; animation-delay: -1.3s" aria-hidden="true"><path d="M12 1l2.6 8.4L23 12l-8.4 2.6L12 23l-2.6-8.4L1 12l8.4-2.6z" fill="#ffffff"></path></svg>
+      </div>
+    </div>
+    <div style="position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 10px; letter-spacing: 4px; color: #d9c08a">SCROLL<span style="width: 1px; height: 40px; background: linear-gradient(#e9c97a, transparent)"></span></div>
+  </section>
+
+  <!-- TRUST MARQUEE -->
+  <section aria-label="Why clients trust us" style="background: linear-gradient(90deg,#a87f2c,#e9c97a,#c9a24a); color: #0b1a33; overflow: hidden; padding: 18px 0">
+    <div class="marquee" style="display: flex; gap: 56px; width: max-content; font-size: 13px; font-weight: 600; letter-spacing: 2px; white-space: nowrap">
+      <span>✦ VETTED &amp; TRAINED TEAM</span><span>✦ ECO-SAFE PRODUCTS</span><span>✦ MONTHLY PHOTO UPDATES</span><span>✦ TRUSTED BY FAMILIES ABROAD</span><span>✦ HOMES · OFFICES · AIRBNBS</span><span>✦ ONE CALL, WHOLE PROPERTY CARE</span>
+      <span>✦ VETTED &amp; TRAINED TEAM</span><span>✦ ECO-SAFE PRODUCTS</span><span>✦ MONTHLY PHOTO UPDATES</span><span>✦ TRUSTED BY FAMILIES ABROAD</span><span>✦ HOMES · OFFICES · AIRBNBS</span><span>✦ ONE CALL, WHOLE PROPERTY CARE</span>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" style="background: #f7f3ea; color: #0b1a33; padding: 110px clamp(16px, 4vw, 64px)">
+    <div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px">
+        <div style="display: flex; flex-direction: column; gap: 14px; max-width: 640px">
+          <span style="font-size: 12px; letter-spacing: 5px; color: #8a6a22; font-weight: 600">OUR SERVICES</span>
+          <h2 class="h2" style="margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 58px; font-weight: 600; line-height: 1.05">Every space, <em style="color: #a87f2c">exquisitely</em> kept.</h2>
+        </div>
+        <p style="margin: 0; max-width: 420px; font-size: 15px; line-height: 1.75; color: #3c4a63">From a one-bedroom flat to a full office block, our trained teams bring the same care, the same checklist and the same finish.</p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px">
+        <a href="#services" class="tilt" style="text-decoration: none; color: #0b1a33; background: #ffffff; border-radius: 22px; overflow: hidden; display: flex; flex-direction: column">
+          <div style="height: 220px; overflow: hidden"><img src="/_blob/7057a1fb9835d02e5c16888f1552a305" alt="Cleaner wiping a window" style="width: 100%; height: 100%; object-fit: cover; display: block"></div>
+          <div style="padding: 26px; display: flex; flex-direction: column; gap: 12px">
+            <span style="font-size: 11px; letter-spacing: 3px; color: #8a6a22; font-weight: 600">01 · RESIDENTIAL</span>
+            <h3 style="margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 600">Home Cleaning</h3>
+            <p style="margin: 0; font-size: 14px; line-height: 1.65; color: #3c4a63">Regular, deep and move-in/out cleans, laundry and ironing, carpets, upholstery and sanitisation.</p>
+            <span style="font-size: 13px; font-weight: 600; color: #8a6a22">Explore →</span>
+          </div>
+        </a>
+        <a href="#services" class="tilt" style="text-decoration: none; color: #0b1a33; background: #ffffff; border-radius: 22px; overflow: hidden; display: flex; flex-direction: column">
+          <div style="height: 220px; overflow: hidden"><img src="/_blob/4f5bce35cc100d5c49df9a8c684b4e5a" alt="Bright modern office" style="width: 100%; height: 100%; object-fit: cover; display: block"></div>
+          <div style="padding: 26px; display: flex; flex-direction: column; gap: 12px">
+            <span style="font-size: 11px; letter-spacing: 3px; color: #8a6a22; font-weight: 600">02 · CORPORATE</span>
+            <h3 style="margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 600">Commercial Cleaning</h3>
+            <p style="margin: 0; font-size: 14px; line-height: 1.65; color: #3c4a63">Offices, restaurants, retail, schools and venues, on dependable long-term contracts.</p>
+            <span style="font-size: 13px; font-weight: 600; color: #8a6a22">Explore →</span>
+          </div>
+        </a>
+        <a href="#services" class="tilt" style="text-decoration: none; color: #0b1a33; background: #ffffff; border-radius: 22px; overflow: hidden; display: flex; flex-direction: column">
+          <div style="height: 220px; overflow: hidden"><img src="/_blob/547abcb3212cd95fc20e444188d6baaf" alt="Freshly made guest bedroom" style="width: 100%; height: 100%; object-fit: cover; display: block"></div>
+          <div style="padding: 26px; display: flex; flex-direction: column; gap: 12px">
+            <span style="font-size: 11px; letter-spacing: 3px; color: #8a6a22; font-weight: 600">03 · SHORT-STAY</span>
+            <h3 style="margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 600">Airbnb Management</h3>
+            <p style="margin: 0; font-size: 14px; line-height: 1.65; color: #3c4a63">Guest turnovers, linen, restocking, inspections and check-in support for hosts at home or abroad.</p>
+            <span style="font-size: 13px; font-weight: 600; color: #8a6a22">Explore →</span>
+          </div>
+        </a>
+        <a href="#services" class="tilt" style="text-decoration: none; color: #0b1a33; background: #ffffff; border-radius: 22px; overflow: hidden; display: flex; flex-direction: column">
+          <div style="height: 220px; overflow: hidden"><img src="/_blob/096607bd0067c7b59980a8c2b21058a8" alt="Cleaning tools and supplies" style="width: 100%; height: 100%; object-fit: cover; display: block"></div>
+          <div style="padding: 26px; display: flex; flex-direction: column; gap: 12px">
+            <span style="font-size: 11px; letter-spacing: 3px; color: #8a6a22; font-weight: 600">04 · PROPERTY</span>
+            <h3 style="margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 600">Maintenance</h3>
+            <p style="margin: 0; font-size: 14px; line-height: 1.65; color: #3c4a63">Painting, plumbing, tiling and handyman repairs, coordinated by one trusted company.</p>
+            <span style="font-size: 13px; font-weight: 600; color: #8a6a22">Explore →</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- BEFORE / AFTER SCROLL STORY -->
+  <section id="about" style="background: #0b1a33; padding: 110px clamp(16px, 4vw, 64px)">
+    <div style="max-width: 1180px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px; align-items: center">
+      <div style="display: flex; flex-direction: column; gap: 14px; align-items: center; text-align: center">
+        <span style="font-size: 12px; letter-spacing: 5px; color: #d9c08a">THE EXQUISITE DIFFERENCE</span>
+        <h2 class="h2" style="margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 58px; font-weight: 600; color: #ffffff; line-height: 1.05">From lived-in to <span class="gold-text">immaculate.</span></h2>
+        <p style="margin: 0; max-width: 560px; color: #c9d2e3; font-size: 15px; line-height: 1.7">Drag the handle to see the change. On the live site, the wipe moves as you scroll.</p>
+      </div>
+      <div style="position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 26px; overflow: hidden; box-shadow: 0 40px 80px rgba(0,0,0,.45), 0 0 0 1px rgba(243,217,139,.35)">
+        <img src="/_blob/35472da00cdb15a3283b517e3bb9098c" alt="Living room after cleaning" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover">
+        <div style="position: absolute; inset: 0; clip-path: inset(0 {{clipR}}% 0 0)">
+          <img src="/_blob/35472da00cdb15a3283b517e3bb9098c" alt="" class="grime" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover">
+          <div class="dust" style="position: absolute; inset: 0"></div>
+        </div>
+        <div style="position: absolute; top: 0; bottom: 0; left: {{pos}}%; width: 3px; background: #f3d98b; box-shadow: 0 0 18px rgba(243,217,139,.8)"></div>
+        <span style="position: absolute; top: 22px; left: 22px; background: rgba(11,26,51,.8); color: #f3d98b; padding: 8px 14px; border-radius: 999px; font-size: 12px; letter-spacing: 2px">BEFORE</span>
+        <span style="position: absolute; top: 22px; right: 22px; background: rgba(243,217,139,.92); color: #0b1a33; padding: 8px 14px; border-radius: 999px; font-size: 12px; font-weight: 600; letter-spacing: 2px">AFTER</span>
+        <label for="ba" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Before and after comparison</label>
+        <input id="ba" class="slider" type="range" min="0" max="100" value="{{pos}}" onChange="{{onSlide}}" style="position: absolute; inset: 0; width: 100%; height: 100%; margin: 0">
+      </div>
+    </div>
+  </section>
+
+  <!-- OCCASION FINDER -->
+  <section id="care" style="background: #f7f3ea; color: #0b1a33; padding: 110px clamp(16px, 4vw, 64px)">
+    <div style="max-width: 1180px; margin: 0 auto; display: flex; flex-direction: column; gap: 36px">
+      <div style="display: flex; flex-direction: column; gap: 14px; max-width: 700px">
+        <span style="font-size: 12px; letter-spacing: 5px; color: #8a6a22; font-weight: 600">SPECIALISED HOME CARE</span>
+        <h2 class="h2" style="margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 58px; font-weight: 600; line-height: 1.05">Care for life’s <em style="color: #a87f2c">big moments.</em></h2>
+        <p style="margin: 0; font-size: 15px; line-height: 1.7; color: #3c4a63">Tell us what’s happening and we’ll match the right package.</p>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 12px">
+        <sc-for list="{{occasions}}" as="o" hint-placeholder-count="6">
+          <sc-if value="{{o.active}}" hint-placeholder-val="{{false}}">
+            <button type="button" class="chip" onClick="{{o.pick}}" style="font-family: inherit; font-size: 14px; font-weight: 600; padding: 14px 22px; border-radius: 999px; border: 1px solid #0b1a33; background: #0b1a33; color: #f3d98b; cursor: pointer">{{o.label}}</button>
+          </sc-if>
+          <sc-if value="{{o.inactive}}" hint-placeholder-val="{{true}}">
+            <button type="button" class="chip" onClick="{{o.pick}}" style="font-family: inherit; font-size: 14px; font-weight: 500; padding: 14px 22px; border-radius: 999px; border: 1px solid rgba(11,26,51,.25); background: transparent; color: #0b1a33; cursor: pointer">{{o.label}}</button>
+          </sc-if>
+        </sc-for>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; background: #0b1a33; color: #e8ecf4; border-radius: 26px; overflow: hidden; box-shadow: 0 30px 70px rgba(11,26,51,.25)">
+        <div style="flex: 1 1 360px; min-height: 340px; background: #16294f; overflow: hidden"><img src="/_blob/058133ed37e8ff04bd1f0d3b3464806f" alt="Clean family kitchen" style="width: 100%; height: 100%; object-fit: cover; display: block"></div>
+        <div style="flex: 1 1 420px; padding: 44px; display: flex; flex-direction: column; gap: 16px">
+          <span style="font-size: 12px; letter-spacing: 4px; color: #d9c08a">{{sel.for}}</span>
+          <h3 style="margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 42px; font-weight: 600; color: #ffffff">{{sel.name}}</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.7; color: #c9d2e3">{{sel.blurb}}</p>
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 20px; margin-top: 6px">
+            <sc-for list="{{sel.items}}" as="it" hint-placeholder-count="6">
+              <span style="display: flex; gap: 10px; align-items: center; font-size: 14px; color: #e8ecf4"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e9c97a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>{{it}}</span>
+            </sc-for>
+          </div>
+          <a href="#contact" class="gold-btn" style="align-self: flex-start; margin-top: 12px; text-decoration: none; padding: 14px 26px; border-radius: 999px; font-weight: 600; font-size: 14px">Ask about this package</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIASPORA -->
+  <section style="background: radial-gradient(ellipse at 70% 40%, #1c3566 0%, #0b1a33 65%); padding: 110px clamp(16px, 4vw, 64px)">
+    <div style="max-width: 1240px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 56px; align-items: center">
+      <div style="flex: 1 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 18px">
+        <span style="font-size: 12px; letter-spacing: 5px; color: #d9c08a">FOR GHANAIANS ABROAD</span>
+        <h2 class="h2" style="margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 56px; font-weight: 600; color: #ffffff; line-height: 1.05">Your home in Ghana, <span class="gold-text">cared for.</span></h2>
+        <p style="margin: 0; font-size: 15px; line-height: 1.75; color: #c9d2e3">Whether you’re in London, Toronto or New York, we’re your trusted people on the ground. We check on your parents, look after your property and send you photos every month.</p>
+        <div style="display: flex; flex-direction: column; gap: 16px; margin-top: 10px">
+          <div style="display: flex; gap: 16px; align-items: center"><span style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 50%; border: 1px solid #c9a24a; display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 20px; color: #f3d98b">1</span><span style="font-size: 15px; color: #e8ecf4">Book online or on WhatsApp, from any timezone</span></div>
+          <div style="display: flex; gap: 16px; align-items: center"><span style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 50%; border: 1px solid #c9a24a; display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 20px; color: #f3d98b">2</span><span style="font-size: 15px; color: #e8ecf4">Our vetted team visits, cleans and checks the home</span></div>
+          <div style="display: flex; gap: 16px; align-items: center"><span style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 50%; border: 1px solid #c9a24a; display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 20px; color: #f3d98b">3</span><span style="font-size: 15px; color: #e8ecf4">You get a photo report and update, every month</span></div>
+        </div>
+      </div>
+      <div style="flex: 1 1 460px; min-width: 0; position: relative; aspect-ratio: 1 / 0.8">
+        <svg viewBox="0 0 500 400" style="width: 100%; height: 100%" role="img" aria-label="Gold routes from London, Toronto and New York to Accra">
+          <g fill="none" stroke="rgba(243,217,139,.14)" stroke-width="1">
+            <ellipse cx="250" cy="200" rx="230" ry="180"></ellipse>
+            <ellipse cx="250" cy="200" rx="160" ry="180"></ellipse>
+            <ellipse cx="250" cy="200" rx="80" ry="180"></ellipse>
+            <line x1="20" y1="200" x2="480" y2="200"></line>
+            <ellipse cx="250" cy="200" rx="230" ry="100"></ellipse>
+          </g>
+          <path class="arc" d="M290 90 Q 330 160 300 250" fill="none" stroke="#f3d98b" stroke-width="2"></path>
+          <path class="arc" d="M120 110 Q 210 120 300 250" fill="none" stroke="#e9c97a" stroke-width="2"></path>
+          <path class="arc" d="M95 150 Q 200 190 300 250" fill="none" stroke="#c9a24a" stroke-width="2"></path>
+          <circle cx="290" cy="90" r="5" fill="#ffffff"></circle><text x="300" y="86" fill="#e8ecf4" font-size="13" font-family="Montserrat, sans-serif">London</text>
+          <circle cx="120" cy="110" r="5" fill="#ffffff"></circle><text x="70" y="98" fill="#e8ecf4" font-size="13" font-family="Montserrat, sans-serif">Toronto</text>
+          <circle cx="95" cy="150" r="5" fill="#ffffff"></circle><text x="30" y="172" fill="#e8ecf4" font-size="13" font-family="Montserrat, sans-serif">New York</text>
+          <circle cx="300" cy="250" r="16" fill="rgba(243,217,139,.18)"></circle>
+          <circle cx="300" cy="250" r="8" fill="#f3d98b"></circle>
+          <text x="322" y="256" fill="#f3d98b" font-size="17" font-weight="600" font-family="Cormorant Garamond, serif">Accra, Ghana</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING + CURRENCY -->
+  <section style="background: #f7f3ea; color: #0b1a33; padding: 110px clamp(16px, 4vw, 64px)">
+    <div style="max-width: 1180px; margin: 0 auto; display: flex; flex-direction: column; gap: 44px">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px">
+        <div style="display: flex; flex-direction: column; gap: 14px">
+          <span style="font-size: 12px; letter-spacing: 5px; color: #8a6a22; font-weight: 600">TRANSPARENT PRICING</span>
+          <h2 class="h2" style="margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 58px; font-weight: 600; line-height: 1.05">Pay in the currency <em style="color: #a87f2c">you live in.</em></h2>
+        </div>
+        <div role="group" aria-label="Currency" style="display: flex; gap: 4px; background: #ffffff; padding: 6px; border-radius: 999px; box-shadow: 0 10px 30px rgba(11,26,51,.1)">
+          <sc-for list="{{currencies}}" as="c" hint-placeholder-count="3">
+            <sc-if value="{{c.active}}" hint-placeholder-val="{{false}}">
+              <button type="button" onClick="{{c.pick}}" style="font-family: inherit; font-size: 14px; font-weight: 600; padding: 12px 22px; border-radius: 999px; border: 0; background: #0b1a33; color: #f3d98b; cursor: pointer">{{c.code}}</button>
+            </sc-if>
+            <sc-if value="{{c.inactive}}" hint-placeholder-val="{{true}}">
+              <button type="button" onClick="{{c.pick}}" style="font-family: inherit; font-size: 14px; font-weight: 500; padding: 12px 22px; border-radius: 999px; border: 0; background: transparent; color: #3c4a63; cursor: pointer">{{c.code}}</button>
+            </sc-if>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px">
+        <sc-for list="{{plans}}" as="p" hint-placeholder-count="3">
+          <div class="tilt" style="background: #ffffff; border-radius: 24px; padding: 36px; display: flex; flex-direction: column; gap: 14px; border: 1px solid rgba(201,162,74,.35)">
+            <span style="font-size: 11px; letter-spacing: 3px; color: #8a6a22; font-weight: 600">{{p.tag}}</span>
+            <h3 style="margin: 0; font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 600">{{p.name}}</h3>
+            <div style="display: flex; align-items: baseline; gap: 8px"><span style="font-size: 13px; color: #3c4a63">from</span><span style="font-family: 'Cormorant Garamond', serif; font-size: 52px; font-weight: 700; color: #0b1a33">{{p.price}}</span></div>
+            <p style="margin: 0; font-size: 14px; line-height: 1.65; color: #3c4a63">{{p.desc}}</p>
+            <a href="#contact" style="margin-top: 8px; text-decoration: none; text-align: center; padding: 14px; border-radius: 999px; border: 1px solid #0b1a33; color: #0b1a33; font-weight: 600; font-size: 14px">Book on WhatsApp</a>
+          </div>
+        </sc-for>
+      </div>
+      <span style="font-size: 12px; color: #5a6680">Sample prices for the mockup. Final rates to be confirmed.</span>
+    </div>
+  </section>
+
+  <!-- CTA + FOOTER -->
+  <section id="contact" style="background: #0b1a33; padding: 110px clamp(16px, 4vw, 64px) 40px; border-top: 1px solid rgba(243,217,139,.2)">
+    <div style="max-width: 1180px; margin: 0 auto; display: flex; flex-direction: column; gap: 70px">
+      <div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 18px">
+        <span style="font-family: 'Great Vibes', cursive; font-size: 64px; color: #e9c97a; line-height: 1">You do, we clean.</span>
+        <p style="margin: 0; max-width: 520px; color: #c9d2e3; font-size: 16px; line-height: 1.7">Tell us about your space. We’ll reply with a quote, usually the same day.</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 14px; justify-content: center">
+          <a href="#contact" class="gold-btn pulse" style="text-decoration: none; padding: 17px 32px; border-radius: 999px; font-weight: 600; font-size: 14px">Get my free quote</a>
+          <a href="#contact" class="ghost-btn" style="text-decoration: none; padding: 16px 30px; border-radius: 999px; font-size: 14px; color: #f3d98b; border: 1px solid rgba(243,217,139,.55)">Chat on WhatsApp</a>
+        </div>
+      </div>
+      <footer style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 36px; padding-top: 50px; border-top: 1px solid rgba(243,217,139,.18); font-size: 14px; color: #c9d2e3">
+        <div style="display: flex; flex-direction: column; gap: 12px">
+          <span style="font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 700; letter-spacing: 3px; color: #e9c97a">EXQUISITE</span>
+          <span style="line-height: 1.7">Homes · Families · Businesses. Premium cleaning and home care across Ghana.</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 10px"><span style="color: #f3d98b; font-weight: 600; letter-spacing: 2px; font-size: 12px">SERVICES</span><a href="#services" style="color: #c9d2e3; text-decoration: none">Residential</a><a href="#services" style="color: #c9d2e3; text-decoration: none">Commercial</a><a href="#services" style="color: #c9d2e3; text-decoration: none">Airbnb Management</a><a href="#services" style="color: #c9d2e3; text-decoration: none">Property Maintenance</a></div>
+        <div style="display: flex; flex-direction: column; gap: 10px"><span style="color: #f3d98b; font-weight: 600; letter-spacing: 2px; font-size: 12px">CARE PACKAGES</span><a href="#care" style="color: #c9d2e3; text-decoration: none">Exquisite Family Care</a><a href="#care" style="color: #c9d2e3; text-decoration: none">Mama Care</a><a href="#care" style="color: #c9d2e3; text-decoration: none">Bereavement Care</a><a href="#care" style="color: #c9d2e3; text-decoration: none">Wedding Recovery</a></div>
+        <div style="display: flex; flex-direction: column; gap: 10px"><span style="color: #f3d98b; font-weight: 600; letter-spacing: 2px; font-size: 12px">CONTACT</span><span>Accra, Ghana</span><span>+233 [00 000 0000]</span><span>[hello@exquisitecleaners.com]</span></div>
+      </footer>
+      <span style="text-align: center; font-size: 12px; color: #8592ab">© 2026 Exquisite Cleaners. All rights reserved.</span>
+    </div>
+  </section>
+
+  <!-- CHAT LAUNCHER -->
+  <div style="position: absolute; right: 28px; top: 760px; display: flex; align-items: center; gap: 12px">
+    <span class="hide-sm" style="background: #ffffff; color: #0b1a33; padding: 12px 16px; border-radius: 16px 16px 4px 16px; font-size: 13px; box-shadow: 0 10px 30px rgba(0,0,0,.25)">Hi! Need a quote? Ask me anything.</span>
+    <button type="button" aria-label="Open chat assistant" class="gold-btn pulse" style="width: 62px; height: 62px; border-radius: 50%; border: 0; display: flex; align-items: center; justify-content: center; cursor: pointer">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0b1a33" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+    </button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":5900}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { pos: 50, cur: 'GHS', occ: 'abroad' };
+  }
+  renderVals() {
+    var self = this;
+    var rates = { GHS: [1, 'GH₵'], GBP: [1 / 16.5, '£'], USD: [1 / 12.5, '$'] };
+    var cur = this.state.cur;
+    var fmt = function (ghs) { var r = rates[cur]; return r[1] + Math.round(ghs * r[0]).toLocaleString(); };
+    var packs = {
+      abroad: { label: 'Family abroad', for: 'EXQUISITE FAMILY CARE', name: 'Peace of mind, from anywhere', blurb: 'For Ghanaians abroad and busy professionals. We check on your loved ones and their home, and keep you updated.', items: ['Home cleaning & sanitisation', 'Grocery shopping', 'Medication collection', 'Home safety checks', 'Companion visits', 'Monthly photo updates'] },
+      baby: { label: 'New baby', for: 'MAMA CARE', name: 'Support for new mothers', blurb: 'Practical help at home so the family can focus on the newborn.', items: ['Deep cleaning', 'Laundry & ironing', 'Nursery preparation', 'Baby-room sanitisation', 'Grocery shopping', 'Meal prep assistance'] },
+      funeral: { label: 'Bereavement', for: 'BEREAVEMENT CARE', name: 'Compassionate support', blurb: 'Before, during and after funeral arrangements, for families, churches and organisers.', items: ['Pre-funeral cleaning', 'Guest-area preparation', 'Cleaning during events', 'Post-funeral deep clean', 'Kitchen support', 'Waste management'] },
+      wedding: { label: 'Wedding', for: 'WEDDING RECOVERY', name: 'After the celebration', blurb: 'Post-event cleaning and home recovery for newlyweds and their families.', items: ['Post-wedding cleaning', 'Guest-room cleaning', 'Laundry', 'Gift organisation', 'Kitchen cleaning', 'Waste removal'] },
+      travel: { label: 'Returning home', for: 'RETURN FROM TRAVEL', name: 'Come home to fresh', blurb: 'We prepare your home before you land, after business trips, holidays or long stays abroad.', items: ['Deep cleaning', 'Fresh bedding', 'Grocery stocking', 'Fridge preparation', 'Home airing', 'Welcome touches'] },
+      festival: { label: 'Festival', for: 'CELEBRATION PREP', name: 'Ready for guests', blurb: 'Get the whole home ready for Christmas, Eid, Homowo and family occasions.', items: ['Deep cleaning', 'Window cleaning', 'Carpet cleaning', 'Upholstery cleaning', 'Guest-room prep', 'Outdoor cleaning'] }
+    };
+    var occasions = Object.keys(packs).map(function (k) {
+      return { label: packs[k].label, active: self.state.occ === k, inactive: self.state.occ !== k, pick: function () { self.setState({ occ: k }); } };
+    });
+    var currencies = ['GHS', 'GBP', 'USD'].map(function (c) {
+      return { code: c, active: cur === c, inactive: cur !== c, pick: function () { self.setState({ cur: c }); } };
+    });
+    var plans = [
+      { tag: 'RESIDENTIAL', name: 'Regular Home Clean', price: fmt(350), desc: 'Weekly or fortnightly upkeep for a 2–3 bedroom home.' },
+      { tag: 'RESIDENTIAL', name: 'Deep Clean', price: fmt(950), desc: 'Top-to-bottom clean, including kitchen, bathrooms and floors.' },
+      { tag: 'SHORT-STAY', name: 'Airbnb Turnover', price: fmt(450), desc: 'Clean, fresh linen and restock between guests.' }
+    ];
+    return {
+      pos: this.state.pos,
+      clipR: 100 - this.state.pos,
+      onSlide: function (e) { self.setState({ pos: Number(e.target.value) }); },
+      cur: cur,
+      currencies: currencies,
+      plans: plans,
+      occasions: occasions,
+      sel: packs[this.state.occ]
+    };
+  }
+}
+</script>
+</body>
+</html>

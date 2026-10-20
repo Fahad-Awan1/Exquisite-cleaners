@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Book a Clean | Contact Exquisite Cleaners, Accra</title>
+    <meta name="description" content="Book a clean or request a quote from Exquisite Cleaners. Fill in the form and send your booking straight to us on WhatsApp.">
+    <meta property="og:title" content="Book a Clean | Exquisite Cleaners">
+    <meta property="og:description" content="Get a quote, usually the same day.">
+    <link rel="canonical" href="https://exquisitecleaners.com/contact.html">
+    <!-- @include head -->
+  </head>
+  <body>
+    <!-- @include header -->
+
+    <main id="main">
+      <section class="page-hero" aria-labelledby="page-title" style="min-height: clamp(440px, 60svh, 600px)">
+        <div class="page-hero__bg"><x-img name="lounge" alt="" sizes="100vw" loading="eager"></x-img></div>
+        <img class="page-hero__orb" src="/images/emblem-256.webp" alt="" width="256" height="256">
+        <div class="page-hero__inner">
+          <nav class="crumbs" aria-label="Breadcrumb" data-reveal><a href="/">Home</a><span aria-hidden="true">/</span><span aria-current="page">Contact</span></nav>
+          <h1 id="page-title" class="h-display" data-split>Let’s make it <em class="gold-text">exquisite.</em></h1>
+          <p class="lead" data-reveal>Tell us about your space. We’ll reply with a quote, usually the same day.</p>
+        </div>
+      </section>
+
+      <section class="section section--light adinkra" aria-labelledby="form-title">
+        <div class="container contact-grid">
+          <form class="form" data-booking novalidate data-reveal-3d>
+            <div>
+              <span class="eyebrow">Booking request</span>
+              <h2 id="form-title" class="h3 mt-s">Book a clean</h2>
+            </div>
+            <div class="form__row">
+              <div class="field">
+                <label for="name">Full name *</label>
+                <input id="name" name="name" type="text" autocomplete="name" required>
+                <span class="field__error" aria-live="polite"></span>
+              </div>
+              <div class="field">
+                <label for="phone">Phone / WhatsApp *</label>
+                <input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required>
+                <span class="field__error" aria-live="polite"></span>
+              </div>
+            </div>
+            <div class="form__row">
+              <div class="field">
+                <label for="service">Service *</label>
+                <select id="service" name="service" required>
+                  <option value="">Choose a service</option>
+                  <optgroup label="Cleaning">
+                    <option>Residential cleaning</option>
+                    <option>Deep cleaning</option>
+                    <option>Move-in / move-out cleaning</option>
+                    <option>Carpet &amp; upholstery</option>
+                    <option>Commercial cleaning</option>
+                    <option>Airbnb management</option>
+                  </optgroup>
+                  <optgroup label="Specialised care">
+                    <option>Exquisite Family Care</option>
+                    <option>Mama Care</option>
+                    <option>Bereavement Care</option>
+                    <option>Wedding Recovery</option>
+                    <option>Return From Travel</option>
+                    <option>Festival preparation</option>
+                  </optgroup>
+                  <optgroup label="Property">
+                    <option>Property maintenance</option>
+                  </optgroup>
+                </select>
+                <span class="field__error" aria-live="polite"></span>
+              </div>
+              <div class="field">
+                <label for="location">Area / location *</label>
+                <input id="location" name="location" type="text" placeholder="e.g. East Legon, Accra" required>
+                <span class="field__error" aria-live="polite"></span>
+              </div>
+            </div>
+            <fieldset class="field">
+              <legend>Property type</legend>
+              <div class="options">
+                <label><input type="radio" name="property" value="Apartment"><span>Apartment</span></label>
+                <label><input type="radio" name="property" value="House"><span>House</span></label>
+                <label><input type="radio" name="property" value="Office / business"><span>Office / business</span></label>
+                <label><input type="radio" name="property" value="Short-stay rental"><span>Short-stay rental</span></label>
+              </div>
+            </fieldset>
+            <fieldset class="field">
+              <legend>How often?</legend>
+              <div class="options">
+                <label><input type="radio" name="frequency" value="One-off"><span>One-off</span></label>
+                <label><input type="radio" name="frequency" value="Weekly"><span>Weekly</span></label>
+                <label><input type="radio" name="frequency" value="Fortnightly"><span>Fortnightly</span></label>
+                <label><input type="radio" name="frequency" value="Monthly"><span>Monthly</span></label>
+              </div>
+            </fieldset>
+            <div class="form__row">
+              <div class="field">
+                <label for="date">Preferred date</label>
+                <input id="date" name="date" type="date">
+              </div>
+              <div class="field" style="justify-content:flex-end">
+                <div class="options">
+                  <label><input type="checkbox" name="abroad" value="yes"><span>I live outside Ghana</span></label>
+                </div>
+              </div>
+            </div>
+            <div class="field">
+              <label for="message">Anything else we should know?</label>
+              <textarea id="message" name="message" rows="4" placeholder="Number of rooms, access details, special requests…"></textarea>
+            </div>
+            <button class="btn btn--gold" type="submit" data-magnetic>
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 0 1-13.4 7.8L3 21l1.3-4.4A9 9 0 1 1 21 12z"/></svg>
+              Send via WhatsApp
+            </button>
+            <p class="form__note">Your details open in WhatsApp as a ready-to-send message. Nothing is stored on this website.</p>
+            <p class="form__note" role="status" data-status hidden style="color:var(--gold-700);font-weight:600;font-size:14px"></p>
+          </form>
+
+          <aside class="contact-cards" aria-label="Other ways to reach us">
+            <a class="contact-card" href="#" data-wa="Hello Exquisite Cleaners!" target="_blank" rel="noopener" data-reveal>
+              <span class="feature__icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 0 1-13.4 7.8L3 21l1.3-4.4A9 9 0 1 1 21 12z"/></svg></span>
+              <span><strong>WhatsApp</strong><span>Fastest reply, chat with our team</span></span>
+            </a>
+            <a class="contact-card" href="#" data-tel-link data-reveal>
+              <span class="feature__icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></span>
+              <span><strong>Call us</strong><span data-tel-text></span></span>
+            </a>
+            <a class="contact-card" href="#" data-mail-link data-reveal>
+              <span class="feature__icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg></span>
+              <span><strong>Email</strong><span data-mail-text></span></span>
+            </a>
+            <div class="contact-card" data-reveal>
+              <span class="feature__icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+              <span><strong>Visit</strong><span>Accra, Ghana · <span data-hours></span></span></span>
+            </div>
+            <div class="contact-card" style="flex-direction:column;align-items:flex-start;gap:8px" data-reveal>
+              <strong>Living abroad?</strong>
+              <span style="color:var(--mist);font-size:14px">Tick “I live outside Ghana” and we’ll arrange times that suit your time zone.</span>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <!-- @include footer -->
+  </body>
+</html>

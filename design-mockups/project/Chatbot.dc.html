@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Exquisite Cleaners — Chat assistant</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&amp;family=Montserrat:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#8a6a22}a:hover{color:#6b5119}
+.cb *{box-sizing:border-box}
+.gold-btn{background:linear-gradient(135deg,#f3d98b,#c9a24a 55%,#a87f2c);color:#0b1a33}
+.msgs{scrollbar-width:thin}
+.dot{width:7px;height:7px;border-radius:50%;background:#a87f2c;animation:b 1s infinite ease-in-out}
+@keyframes b{0%,80%,100%{opacity:.25;transform:translateY(0)}40%{opacity:1;transform:translateY(-4px)}}
+.in{animation:pop .35s ease-out}
+@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
+.chips{scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
+</style>
+</helmet>
+<div class="cb" style="width: 390px; height: 844px; display: flex; flex-direction: column; background: #f7f3ea; font-family: 'Montserrat', system-ui, sans-serif; color: #0b1a33; overflow: hidden">
+  <header style="background: #0b1a33; padding: 18px 18px 16px; display: flex; align-items: center; gap: 12px; border-bottom: 2px solid #c9a24a">
+    <svg viewBox="0 0 64 64" width="44" height="44" aria-hidden="true"><defs><linearGradient id="gC" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f3d98b"></stop><stop offset=".55" stop-color="#c9a24a"></stop><stop offset="1" stop-color="#a87f2c"></stop></linearGradient></defs><circle cx="32" cy="32" r="29" fill="none" stroke="url(#gC)" stroke-width="1.8"></circle><text x="31" y="42" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="29" font-weight="700" fill="url(#gC)">EC</text><path d="M11 41 C 24 32, 38 31, 53 27" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round"></path></svg>
+    <div style="display: flex; flex-direction: column; gap: 3px; flex-grow: 1">
+      <span style="font-family: 'Cormorant Garamond', serif; font-size: 21px; font-weight: 700; color: #f3d98b">Ama · Exquisite Assistant</span>
+      <span style="font-size: 12px; color: #c9d2e3; display: flex; align-items: center; gap: 6px"><span style="width: 8px; height: 8px; border-radius: 50%; background: #6fd39a"></span>Usually replies instantly</span>
+    </div>
+    <button type="button" aria-label="Reset chat" onClick="{{reset}}" style="width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(243,217,139,.4); background: transparent; color: #f3d98b; cursor: pointer; font-size: 18px">↺</button>
+  </header>
+
+  <div class="msgs" style="flex-grow: 1; overflow-y: auto; padding: 18px 16px; display: flex; flex-direction: column; gap: 12px">
+    <sc-for list="{{msgs}}" as="m" hint-placeholder-count="2">
+      <sc-if value="{{m.bot}}" hint-placeholder-val="{{true}}">
+        <div class="in" style="align-self: flex-start; max-width: 82%; background: #ffffff; border: 1px solid rgba(201,162,74,.35); padding: 13px 15px; border-radius: 4px 18px 18px 18px; font-size: 14px; line-height: 1.55; white-space: pre-line; box-shadow: 0 6px 18px rgba(11,26,51,.06)">{{m.text}}</div>
+      </sc-if>
+      <sc-if value="{{m.user}}" hint-placeholder-val="{{false}}">
+        <div class="in" style="align-self: flex-end; max-width: 82%; background: #0b1a33; color: #f3ead2; padding: 13px 15px; border-radius: 18px 4px 18px 18px; font-size: 14px; line-height: 1.55">{{m.text}}</div>
+      </sc-if>
+    </sc-for>
+    <sc-if value="{{typing}}" hint-placeholder-val="{{false}}">
+      <div style="align-self: flex-start; background: #ffffff; border: 1px solid rgba(201,162,74,.35); padding: 14px 16px; border-radius: 4px 18px 18px 18px; display: flex; gap: 5px"><span class="dot"></span><span class="dot" style="animation-delay: .15s"></span><span class="dot" style="animation-delay: .3s"></span></div>
+    </sc-if>
+  </div>
+
+  <div class="chips" style="display: flex; gap: 8px; overflow-x: auto; padding: 4px 16px 12px">
+    <sc-for list="{{chips}}" as="c" hint-placeholder-count="5">
+      <button type="button" onClick="{{c.ask}}" style="flex-shrink: 0; font-family: inherit; font-size: 13px; font-weight: 500; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid #c9a24a; background: #fffaf0; color: #0b1a33; cursor: pointer">{{c.label}}</button>
+    </sc-for>
+  </div>
+
+  <div style="display: flex; gap: 8px; padding: 12px 14px 22px; background: #ffffff; border-top: 1px solid rgba(11,26,51,.08)">
+    <label for="q" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Type your question</label>
+    <input id="q" type="text" placeholder="Ask about services, prices…" value="{{draft}}" onChange="{{onType}}" style="flex-grow: 1; min-width: 0; font-family: inherit; font-size: 15px; padding: 0 16px; min-height: 48px; border-radius: 999px; border: 1px solid rgba(11,26,51,.18); background: #f7f3ea; color: #0b1a33">
+    <button type="button" aria-label="Send message" onClick="{{send}}" class="gold-btn" style="width: 48px; height: 48px; border-radius: 50%; border: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0b1a33" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"></path></svg>
+    </button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { msgs: [this.greet()], draft: '', typing: false };
+  }
+  greet() {
+    return { bot: true, user: false, text: 'Akwaaba! I’m Ama from Exquisite Cleaners.\nAsk me about our services, prices, care packages or how to book.' };
+  }
+  answer(q) {
+    var t = q.toLowerCase();
+    var rules = [
+      [['price', 'cost', 'how much', 'quote', 'rate'], 'Our prices depend on the size of the space and the service. As a guide, a regular home clean starts from about GH₵350 and a deep clean from about GH₵950 (sample prices).\nTap "Book" for an exact quote within the day.'],
+      [['abroad', 'diaspora', 'uk', 'london', 'usa', 'parent', 'mum', 'dad', 'family care'], 'Exquisite Family Care is made for Ghanaians abroad. We visit your loved ones, clean, shop for groceries, collect medication, do safety checks and send you monthly photo updates.'],
+      [['airbnb', 'short stay', 'host', 'guest', 'turnover'], 'For Airbnb hosts we handle guest turnovers, linen and laundry, restocking, inspections, check-in support and emergency guest help, even if you live outside Ghana.'],
+      [['office', 'commercial', 'business', 'restaurant', 'school', 'contract'], 'We clean offices, restaurants, retail spaces, schools, venues and commercial buildings, usually on long-term contracts with a dedicated team.'],
+      [['baby', 'mama', 'mother', 'newborn'], 'Mama Care supports new mothers: deep cleaning, laundry, nursery preparation, baby-room sanitisation, groceries and meal prep help.'],
+      [['funeral', 'bereave', 'death'], 'We’re sorry for your loss. Bereavement Care covers pre-funeral cleaning, guest-area preparation, cleaning during arrangements and a post-funeral deep clean.'],
+      [['wedding'], 'Wedding Recovery takes care of post-wedding cleaning, guest rooms, laundry, gift organisation and waste removal.'],
+      [['paint', 'plumb', 'tile', 'repair', 'maintenance', 'handyman'], 'Our property maintenance team handles painting, plumbing, tiling, fixtures and minor repairs, all coordinated by us.'],
+      [['area', 'where', 'location', 'accra', 'kumasi'], 'We’re based in Accra and serve the Greater Accra area. Ask us about other cities.'],
+      [['book', 'appointment', 'schedule', 'whatsapp', 'contact', 'call'], 'Booking is easy: tap WhatsApp to chat with our team, or fill in the booking form. We confirm the same day.'],
+      [['home', 'house', 'deep', 'clean', 'carpet', 'laundry'], 'Our residential service covers regular and deep cleaning, move-in/out, kitchens and bathrooms, windows, floors, laundry and ironing, carpets, upholstery and sanitisation.'],
+      [['hi', 'hello', 'hey', 'good'], 'Hello! How can I help you today?']
+    ];
+    for (var i = 0; i < rules.length; i++) {
+      for (var j = 0; j < rules[i][0].length; j++) {
+        if (t.indexOf(rules[i][0][j]) !== -1) return rules[i][1];
+      }
+    }
+    return 'I’m not sure about that one, but our team can help. Tap WhatsApp to talk to a person.';
+  }
+  ask(q) {
+    var self = this;
+    if (!q || !q.trim()) return;
+    this.setState({ msgs: this.state.msgs.concat([{ bot: false, user: true, text: q }]), draft: '', typing: true });
+    setTimeout(function () {
+      self.setState({ typing: false, msgs: self.state.msgs.concat([{ bot: true, user: false, text: self.answer(q) }]) });
+    }, 900);
+  }
+  renderVals() {
+    var self = this;
+    var chips = ['Prices', 'Family abroad', 'Airbnb hosting', 'Office cleaning', 'Mama Care', 'Book a clean'].map(function (l) {
+      return { label: l, ask: function () { self.ask(l); } };
+    });
+    return {
+      msgs: this.state.msgs,
+      typing: this.state.typing,
+      draft: this.state.draft,
+      chips: chips,
+      onType: function (e) { self.setState({ draft: e.target.value }); },
+      send: function () { self.ask(self.state.draft); },
+      reset: function () { self.setState({ msgs: [self.greet()], draft: '', typing: false }); }
+    };
+  }
+}
+</script>
+</body>
+</html>
