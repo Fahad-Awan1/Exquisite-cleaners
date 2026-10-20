@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "build:preview": "vite build --mode demo",
+    "deploy:preview": "npm run build:preview && cd preview-dist && npx vercel link --yes --project exquisite-cleaners-preview && node -e \"require('fs').rmSync('.env.local',{force:true})\" && npx vercel deploy --prod --yes",
     "preview": "vite preview",
     "images": "node scripts/optimize-images.mjs"
   },
