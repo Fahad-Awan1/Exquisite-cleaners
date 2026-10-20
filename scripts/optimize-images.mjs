@@ -23,7 +23,7 @@ for (const file of fs.readdirSync(SRC)) {
 
 // "Before" version of the before/after photo, baked here so the browser never runs a CSS filter while animating.
 {
-  const src = path.join(SRC, 'lounge.jpg');
+  const src = path.join(SRC, 'living-room.jpg');
   const { width, height } = await sharp(src).metadata();
   const grime = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">
     <defs>${[[20, 72, 28], [70, 38, 24], [48, 88, 26], [85, 80, 20], [32, 30, 18]].map(([x, y, r], i) =>
@@ -37,9 +37,9 @@ for (const file of fs.readdirSync(SRC)) {
     .composite([{ input: grime }])
     .toBuffer();
   for (const w of WIDTHS) {
-    await sharp(before).resize({ width: w }).webp({ quality: 70 }).toFile(path.join(OUT, `lounge-before-${w}.webp`));
+    await sharp(before).resize({ width: w }).webp({ quality: 70 }).toFile(path.join(OUT, `living-room-before-${w}.webp`));
   }
-  console.log('✓ lounge-before');
+  console.log('✓ living-room-before');
 }
 
 // Logo: full lockup, emblem crop, favicons and social preview.

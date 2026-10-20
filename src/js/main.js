@@ -3,7 +3,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import Lenis from 'lenis';
 
-import { CONTACT, waLink } from './config.js';
+import { CONTACT, SOCIAL, waLink } from './config.js';
 import { initIntro, initPageTransitions } from './modules/transitions.js';
 import { initHeader, initDrawer } from './modules/nav.js';
 import { initAnimations } from './modules/animations.js';
@@ -29,14 +29,26 @@ if (!reduceMotion && finePointer) {
 gsap.ticker.lagSmoothing(500, 33);
 window.__lenis = lenis;
 
-// Contact details from config.
-document.querySelectorAll('[data-wa]').forEach((a) => (a.href = waLink(a.dataset.wa)));
-document.querySelectorAll('[data-tel]').forEach((a) => { a.href = `tel:${CONTACT.phoneHref}`; a.textContent = CONTACT.phone; });
-document.querySelectorAll('[data-tel-link]').forEach((a) => (a.href = `tel:${CONTACT.phoneHref}`));
-document.querySelectorAll('[data-mail]').forEach((a) => { a.href = `mailto:${CONTACT.email}`; a.textContent = CONTACT.email; });
-document.querySelectorAll('[data-mail-link]').forEach((a) => (a.href = `mailto:${CONTACT.email}`));
-document.querySelectorAll('[data-tel-text]').forEach((el) => (el.textContent = CONTACT.phone));
-document.querySelectorAll('[data-mail-text]').forEach((el) => (el.textContent = CONTACT.email));
+// Contact details from config.js. The HTML only holds fallback links (#contact); the real
+// WhatsApp / phone / email values are filled in here, so the number lives in one place.
+const $all = (sel) => document.querySelectorAll(sel);
+$all('[data-wa]').forEach((a) => { a.href = waLink(a.dataset.wa); a.target = '_blank'; a.rel = 'noopener'; });
+$all('[data-tel]').forEach((a) => { a.href = `tel:${CONTACT.phoneHref}`; a.textContent = CONTACT.phone; });
+$all('[data-tel-link]').forEach((a) => (a.href = `tel:${CONTACT.phoneHref}`));
+$all('[data-tel-text]').forEach((el) => (el.textContent = CONTACT.phone));
+if (CONTACT.email) {
+  $all('[data-mail], [data-mail-link]').forEach((a) => { a.href = `mailto:${CONTACT.email}`; a.hidden = false; });
+  $all('[data-mail]').forEach((a) => (a.textContent = CONTACT.email));
+  $all('[data-mail-text]').forEach((el) => (el.textContent = CONTACT.email));
+} else {
+  $all('[data-mail], [data-mail-link]').forEach((el) => el.remove());
+}
+// Social icons appear only once their URL is set.
+$all('[data-social]').forEach((a) => {
+  const url = SOCIAL[a.dataset.social];
+  if (url) { a.href = url; a.hidden = false; } else a.remove();
+});
+$all('[data-socials]').forEach((box) => (box.hidden = !box.querySelector('a')));
 document.querySelectorAll('[data-hours]').forEach((el) => (el.textContent = CONTACT.hours));
 document.querySelectorAll('[data-year]').forEach((el) => (el.textContent = new Date().getFullYear()));
 

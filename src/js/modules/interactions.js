@@ -67,7 +67,8 @@ function initCursor() {
   });
 }
 
-/* In-page anchors use Lenis for a smooth glide */
+/* In-page anchors use Lenis for a smooth glide.
+   data-tab="baby" also opens that occasion tab (#tab-baby) on the way. */
 function initAnchors(lenis) {
   document.addEventListener('click', (e) => {
     const a = e.target.closest('a[href^="#"]');
@@ -75,6 +76,7 @@ function initAnchors(lenis) {
     const target = document.querySelector(a.getAttribute('href'));
     if (!target) return;
     e.preventDefault();
+    if (a.dataset.tab) document.getElementById(`tab-${a.dataset.tab}`)?.click();
     if (lenis) lenis.scrollTo(target, { offset: -80, duration: 1.4 });
     else target.scrollIntoView({ behavior: 'smooth' });
   });

@@ -1,8 +1,10 @@
-import { CONTACT, CURRENCIES, waLink } from '../config.js';
+import { CONTACT, CURRENCIES, PRICES, waLink } from '../config.js';
+import { demoTarget } from '../demo-links.js';
 
 /* ------------------------------------------------------------------
    "Ama" — a hardcoded assistant. Each intent has trigger keywords,
-   a reply (with optional [label](url) links) and follow-up chips.
+   a reply and follow-up chips. Replies may contain [label](url) links
+   and [[label|url]] buttons.
    ------------------------------------------------------------------ */
 
 const price = (ghs) => {
@@ -95,7 +97,7 @@ const INTENTS = [
   {
     id: 'prices',
     keys: ['price', 'prices', 'cost', 'how much', 'quote', 'rate', 'charge', 'fee', 'expensive', 'cheap', 'budget', 'family care price'],
-    reply: () => `Here are our indicative starting prices:\n• Regular home clean: from ${price(350)}\n• Deep clean: from ${price(950)}\n• Move-in / move-out: from ${price(1200)}\n• Airbnb turnover: from ${price(450)}\n• Family Care: from ${price(1500)} per month\n\nThe final quote depends on size and needs. Switch currency at the top of the page. [Get an exact quote](/contact.html)`,
+    reply: () => `Here are our sample starting prices:\n• Regular home clean: from ${price(PRICES.regular)}\n• Deep clean: from ${price(PRICES.deep)}\n• Move-in / move-out: from ${price(PRICES.moveout)}\n• Carpet & upholstery: from ${price(PRICES.carpet)}\n• Airbnb turnover: from ${price(PRICES.airbnb)}\n• Family Care: from ${price(PRICES.familyCare)} per month\n\nFinal price after a free quote. You can switch currency at the top of the page.\n[[Get a free quote on WhatsApp|${waLink("Hello Exquisite Cleaners, I'd like a free quote.")}]]`,
     chips: ['Book a clean', 'Office cleaning', 'Talk to a person'],
   },
   {
@@ -131,7 +133,7 @@ const INTENTS = [
   {
     id: 'human',
     keys: ['human', 'person', 'agent', 'call', 'phone', 'number', 'contact', 'email', 'whatsapp', 'talk to a person', 'speak'],
-    reply: () => `Of course. You can reach our team:\n• [WhatsApp](${waLink('Hello Exquisite Cleaners!')})\n• Call [${CONTACT.phone}](tel:${CONTACT.phoneHref})\n• Email [${CONTACT.email}](mailto:${CONTACT.email})`,
+    reply: () => `Of course. You can reach our team:\n• [WhatsApp](${waLink('Hello Exquisite Cleaners!')})\n• Call [${CONTACT.phone}](tel:${CONTACT.phoneHref})${CONTACT.email ? `\n• Email [${CONTACT.email}](mailto:${CONTACT.email})` : ''}`,
     chips: ['Book a clean', 'Prices'],
   },
   {
@@ -158,8 +160,39 @@ const CARE = {
 
 const START_CHIPS = ['Prices', 'I live abroad', 'Airbnb hosting', 'Office cleaning', 'Book a clean'];
 
+/* Price questions ("How much is a deep clean?") answer with that service's sample
+   "from" price in the selected currency. Checked in order, so "deep" wins over "home". */
+const PRICE_WORDS = /\b(price|prices|pricing|cost|costs|how much|quote|rate|rates|charge|charges|fee|fees|expensive|cheap|budget)\b/;
+const PRICE_SERVICES = [
+  { keys: ['deep'], name: 'A deep clean', ghs: () => PRICES.deep, ask: 'a deep clean' },
+  { keys: ['move in', 'move-in', 'move out', 'move-out', 'moving', 'end of tenancy'], name: 'A move-in / move-out clean', ghs: () => PRICES.moveout, ask: 'a move-in / move-out clean' },
+  { keys: ['carpet', 'upholstery', 'sofa', 'couch', 'rug'], name: 'Carpet & upholstery cleaning', ghs: () => PRICES.carpet, ask: 'carpet & upholstery cleaning' },
+  { keys: ['airbnb', 'turnover', 'short stay', 'short-stay', 'guest'], name: 'An Airbnb turnover clean', ghs: () => PRICES.airbnb, ask: 'Airbnb turnover cleaning',
+    extra: () => `With linen laundry, restocking and a photo report, it starts from ${price(PRICES.airbnbLinen)}.` },
+  { keys: ['family care', 'parent', 'parents', 'mum', 'mom', 'dad', 'abroad', 'elderly'], name: 'Exquisite Family Care', ghs: () => PRICES.familyCare, per: ' per month', ask: 'Exquisite Family Care' },
+  { keys: ['office', 'commercial', 'business', 'restaurant', 'school', 'shop', 'contract', 'company'], ask: 'commercial cleaning',
+    custom: 'Business cleaning is priced per site, after a free site visit, so the team and schedule match your space.' },
+  { keys: ['mama', 'baby', 'bereave', 'funeral', 'wedding', 'travel', 'festival', 'christmas', 'paint', 'plumb', 'tiling', 'repair', 'maintenance'], ask: 'a care package or maintenance job',
+    custom: 'This service is tailored to your home and dates, so we price it after a quick chat.' },
+  { keys: ['regular', 'weekly', 'fortnightly', 'standard', 'home', 'house', 'apartment', 'flat', 'clean', 'cleaning'], name: 'A regular home clean', ghs: () => PRICES.regular, ask: 'a regular home clean' },
+];
+
+function priceAnswer(t) {
+  const svc = PRICE_SERVICES.find((p) => p.keys.some((k) => (k.length > 5 ? t.includes(k) : t.includes(` ${k} `))));
+  if (!svc) return INTENTS.find((i) => i.id === 'prices');
+  const button = `[[Get a free quote on WhatsApp|${waLink(`Hello Exquisite Cleaners, I'd like a free quote for ${svc.ask}.`)}]]`;
+  const body = svc.custom
+    ? svc.custom
+    : `${svc.name} starts from ${price(svc.ghs())}${svc.per || ''} (sample price).${svc.extra ? `\n${svc.extra()}` : ''}`;
+  return {
+    reply: () => `${body}\n\nFinal price after a free quote.\n${button}`,
+    chips: ['Prices', 'Book a clean', 'Talk to a person'],
+  };
+}
+
 function match(text) {
   const t = ` ${text.toLowerCase().replace(/[^a-z0-9\s'-]/g, ' ').replace(/\s+/g, ' ')} `;
+  if (PRICE_WORDS.test(t)) return priceAnswer(t);
   let best = null;
   let bestScore = 0;
   for (const intent of INTENTS) {
@@ -180,17 +213,29 @@ const FALLBACK = {
   chips: ['Our services', 'Prices', 'Talk to a person'],
 };
 
-// Renders text with [label](url) links, without using innerHTML on user input.
+// In the home-only preview, links to other pages go to the matching homepage section or WhatsApp.
+const isDemo = document.documentElement.hasAttribute('data-demo');
+function resolveLink(url) {
+  const t = isDemo && demoTarget(url);
+  if (!t) return { href: url };
+  return t.wa ? { href: waLink(t.wa) } : { href: t.href, tab: t.tab };
+}
+
+// Renders [label](url) links and [[label|url]] buttons, without using innerHTML on user input.
 function renderRich(el, text) {
-  const re = /\[([^\]]+)\]\(([^)]+)\)/g;
+  const re = /\[\[([^|\]]+)\|([^\]]+)\]\]|\[([^\]]+)\]\(([^)]+)\)/g;
   let last = 0;
   let m;
   while ((m = re.exec(text))) {
     el.append(text.slice(last, m.index));
+    const isButton = m[1] !== undefined;
+    const { href, tab } = resolveLink(isButton ? m[2] : m[4]);
     const a = document.createElement('a');
-    a.textContent = m[1];
-    a.href = m[2];
-    if (/^https?:/.test(m[2])) { a.target = '_blank'; a.rel = 'noopener'; }
+    a.textContent = isButton ? m[1] : m[3];
+    a.href = href;
+    if (isButton) a.className = 'msg__btn';
+    if (tab) a.dataset.tab = tab;
+    if (/^https?:/.test(href)) { a.target = '_blank'; a.rel = 'noopener'; }
     el.append(a);
     last = m.index + m[0].length;
   }
@@ -280,16 +325,28 @@ export function initChat(lenis) {
   // Let wheel events scroll the chat log instead of the page under Lenis.
   log.setAttribute('data-lenis-prevent', '');
 
-  // A gentle teaser bubble after a few seconds, once per session.
-  let seen = false;
-  try { seen = sessionStorage.getItem('ec-chat-teaser') === '1'; } catch (e) { /* ignore */ }
-  if (!seen) {
+  // A link in a reply to a section of this page: close the chat so the page can scroll there.
+  log.addEventListener('click', (e) => { if (e.target.closest('a[href^="#"]')) setOpen(false); });
+
+  // Teaser bubble: shown once per session, hides itself after 5 seconds, and never comes
+  // back once it has been shown, dismissed, or the chat has been opened.
+  const TEASER_KEY = 'ec-chat-teaser';
+  const teaserDone = () => { try { return sessionStorage.getItem(TEASER_KEY) === '1'; } catch (e) { return false; } };
+  const retireTeaser = () => {
+    try { sessionStorage.setItem(TEASER_KEY, '1'); } catch (e) { /* storage blocked */ }
+    teaser.classList.remove('is-visible');
+    setTimeout(() => (teaser.hidden = true), 500);
+  };
+  if (!teaserDone()) {
     setTimeout(() => {
-      if (open) return;
-      teaser.classList.add('is-visible');
-      try { sessionStorage.setItem('ec-chat-teaser', '1'); } catch (e) { /* ignore */ }
-      setTimeout(() => teaser.classList.remove('is-visible'), 7000);
-    }, 6000);
+      if (open || teaserDone()) return;
+      teaser.hidden = false;
+      requestAnimationFrame(() => teaser.classList.add('is-visible'));
+      try { sessionStorage.setItem(TEASER_KEY, '1'); } catch (e) { /* storage blocked */ }
+      setTimeout(retireTeaser, 5000);
+    }, 4000);
   }
-  teaser.addEventListener('click', () => setOpen(true));
+  teaser.querySelector('[data-chat-teaser-open]').addEventListener('click', () => { retireTeaser(); setOpen(true); });
+  teaser.querySelector('[data-chat-teaser-close]').addEventListener('click', retireTeaser);
+  toggle.addEventListener('click', retireTeaser);
 }

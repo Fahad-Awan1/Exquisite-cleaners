@@ -16,11 +16,24 @@ Deploy by uploading the contents of `dist/` to any static host (Netlify, Vercel,
 
 ## Before launch, replace
 
-- `src/js/config.js`: WhatsApp number, phone, email, opening hours, exchange rates.
-- Prices: `data-price="…"` values (in cedis) in `index.html`, `services.html`, `airbnb.html`, `family-care.html`, and the matching numbers in `src/js/modules/chatbot.js` (prices intent).
-- Domain: `https://exquisitecleaners.com` in the page `<link rel="canonical">` tags, `index.html` JSON-LD, `public/robots.txt` and `public/sitemap.xml`.
-- Social links in `src/partials/footer.html`.
-- Photos: drop new `.jpg` files into `assets-src/` (same names to replace) and run `npm run images`.
+Everything below lives in `src/js/config.js`:
+
+- `WHATSAPP_NUMBER` and `PHONE_DISPLAY`: every wa.me and tel: link on the site is built from these.
+- `EMAIL`: empty hides the email everywhere; set it to show it in the footer, contact page and chat.
+- `SOCIAL`: footer icons only appear for the profiles that have a URL.
+- `SITE_URL`: once the client owns a domain, set it to add canonical tags, `sitemap.xml` and the sitemap line in `robots.txt`.
+- `PRICES` (sample "from" prices in cedis, used by the chat) and `CURRENCIES` (exchange rates). The pricing cards use the same numbers in `data-price="…"` in `index.html`, `services.html`, `airbnb.html` and `family-care.html`.
+
+Also: opening hours (`CONTACT.hours`), and photos (drop new `.jpg` files into `assets-src/` with the same names, then run `npm run images`).
+
+## Customer preview (home page only)
+
+```bash
+npm run build:preview    # builds only index.html into preview-dist/
+npm run deploy:preview   # builds and deploys to the Vercel project exquisite-cleaners-preview
+```
+
+Links to pages that aren't in the preview are rewritten at build time (`src/js/demo-links.js`): menu and "Explore" links scroll to the matching homepage section, and booking links open WhatsApp naming the service. The preview is marked `noindex`.
 
 ## Structure
 

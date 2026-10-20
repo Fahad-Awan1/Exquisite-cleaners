@@ -6,7 +6,6 @@
     <meta name="description" content="Premium residential, commercial and Airbnb cleaning, plus trusted home care for families in Ghana and abroad. You do, we clean.">
     <meta property="og:title" content="Exquisite Cleaners | You do, we clean">
     <meta property="og:description" content="Premium cleaning and trusted home care across Accra, Ghana, for homes, families and businesses.">
-    <link rel="canonical" href="https://exquisitecleaners.com/">
     <link rel="preload" as="image" href="/images/hero-960.webp" imagesrcset="/images/hero-480.webp 480w, /images/hero-960.webp 960w, /images/hero-1600.webp 1600w" imagesizes="100vw" fetchpriority="high">
     <!-- @include head -->
     <script type="application/ld+json">
@@ -15,13 +14,9 @@
         "@type": "HouseCleaningService",
         "name": "Exquisite Cleaners",
         "slogan": "You do, we clean",
-        "telephone": "+1-713-364-5155",
-        "email": "fahadriazcs@gmail.com",
         "description": "Premium residential, commercial and Airbnb cleaning, specialised home care and property maintenance in Ghana.",
-        "image": "https://exquisitecleaners.com/images/og-image.jpg",
         "areaServed": "Greater Accra, Ghana",
-        "address": { "@type": "PostalAddress", "addressLocality": "Accra", "addressCountry": "GH" },
-        "url": "https://exquisitecleaners.com/"
+        "address": { "@type": "PostalAddress", "addressLocality": "Accra", "addressCountry": "GH" }
       }
     </script>
   </head>
@@ -40,7 +35,7 @@
             <p class="lead" data-reveal>Premium residential, commercial and Airbnb cleaning, plus trusted home care for families in Ghana and abroad. One dependable team on the ground, looking after what matters to you.</p>
             <div class="hero__actions" data-reveal>
               <a class="btn btn--gold" href="/contact.html" data-magnetic>Book a Clean</a>
-              <a class="btn btn--ghost" href="#" data-wa="Hello Exquisite Cleaners, I'd like a quote." target="_blank" rel="noopener">
+              <a class="btn btn--ghost" href="#contact" data-wa="Hello Exquisite Cleaners, I'd like a quote." target="_blank" rel="noopener">
                 <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 0 1-13.4 7.8L3 21l1.3-4.4A9 9 0 1 1 21 12z"/></svg>
                 WhatsApp us
               </a>
@@ -63,7 +58,7 @@
       </div>
 
       <!-- SERVICES -->
-      <section class="section section--light" aria-labelledby="services-title">
+      <section class="section section--light" id="services" aria-labelledby="services-title">
         <div class="container">
           <div class="section-head section-head--split">
             <div class="section-head" style="margin:0">
@@ -133,8 +128,8 @@
             <h2 id="ba-title" class="h2" data-split>From lived-in to <em class="gold-text">immaculate.</em></h2>
           </div>
           <div class="ba__stage">
-            <x-img name="lounge" alt="Living room after an Exquisite clean" sizes="(min-width: 1280px) 1200px, 100vw" class="ba__img"></x-img>
-            <div class="ba__before" aria-hidden="true"><div class="ba__before-inner"><x-img name="lounge-before" alt="" sizes="(min-width: 1280px) 1200px, 100vw" class="ba__img"></x-img></div></div>
+            <x-img name="living-room" alt="Living room after an Exquisite clean" sizes="(min-width: 1280px) 1200px, 100vw" class="ba__img"></x-img>
+            <div class="ba__before" aria-hidden="true"><div class="ba__before-inner"><x-img name="living-room-before" alt="" sizes="(min-width: 1280px) 1200px, 100vw" class="ba__img"></x-img></div></div>
             <div class="ba__squeegee" aria-hidden="true"></div>
             <div class="ba__sparkles" aria-hidden="true">
               <i style="left:18%;top:30%"></i><i style="left:42%;top:62%"></i><i style="left:64%;top:24%"></i><i style="left:80%;top:56%"></i><i style="left:30%;top:78%"></i><i style="left:88%;top:18%"></i>
@@ -181,7 +176,7 @@
       </section>
 
       <!-- OCCASION FINDER -->
-      <section class="section section--light adinkra" aria-labelledby="finder-title">
+      <section class="section section--light adinkra" id="care" aria-labelledby="finder-title">
         <div class="container" data-finder>
           <div class="section-head">
             <span class="eyebrow" data-reveal>Specialised home care</span>
@@ -198,13 +193,13 @@
           </div>
           <div data-reveal-3d>
             <div class="finder__panel" role="tabpanel" id="panel-abroad" aria-labelledby="tab-abroad">
-              <div class="finder__media"><x-img name="elderly" alt="Carer visiting an elderly woman at home" sizes="(min-width: 900px) 45vw, 100vw"></x-img></div>
+              <div class="finder__media"><x-img name="family-visit" alt="Carer chatting with an elderly woman at home" sizes="(min-width: 900px) 45vw, 100vw"></x-img></div>
               <div class="finder__body">
                 <span class="eyebrow">Exquisite Family Care</span>
                 <h3 class="h3">Peace of mind, from anywhere.</h3>
                 <p>For Ghanaians abroad and busy professionals. We check on your loved ones and their home, and keep you updated every month.</p>
                 <ul class="checklist checklist--2"><li>Home cleaning &amp; sanitisation</li><li>Grocery shopping</li><li>Medication collection</li><li>Home safety checks</li><li>Companion visits</li><li>Monthly photo updates</li></ul>
-                <a class="link-arrow" href="/family-care.html#family-care">Explore Family Care</a>
+                <a class="link-arrow" href="/family-care.html#family-care" data-demo-wa="Hello Exquisite Cleaners, I'd like to know more about Exquisite Family Care." data-demo-label="Ask about Exquisite Family Care on WhatsApp">Explore Family Care</a>
               </div>
             </div>
             <div class="finder__panel" role="tabpanel" id="panel-baby" aria-labelledby="tab-baby" hidden>
@@ -214,17 +209,17 @@
                 <h3 class="h3">Support for new mothers.</h3>
                 <p>Practical help at home so the whole family can focus on the newborn.</p>
                 <ul class="checklist checklist--2"><li>Deep cleaning</li><li>Laundry &amp; ironing</li><li>Nursery preparation</li><li>Baby-room sanitisation</li><li>Grocery shopping</li><li>Meal prep assistance</li></ul>
-                <a class="link-arrow" href="/family-care.html#mama-care">Explore Mama Care</a>
+                <a class="link-arrow" href="/family-care.html#mama-care" data-demo-wa="Hello Exquisite Cleaners, I'd like to know more about Mama Care." data-demo-label="Ask about Mama Care on WhatsApp">Explore Mama Care</a>
               </div>
             </div>
             <div class="finder__panel" role="tabpanel" id="panel-funeral" aria-labelledby="tab-funeral" hidden>
-              <div class="finder__media"><x-img name="lounge" alt="Calm, freshly prepared living room" sizes="(min-width: 900px) 45vw, 100vw"></x-img></div>
+              <div class="finder__media"><x-img name="gathering" alt="Tidy dining room prepared for guests" sizes="(min-width: 900px) 45vw, 100vw"></x-img></div>
               <div class="finder__body">
                 <span class="eyebrow">Bereavement Care</span>
                 <h3 class="h3">Compassionate support.</h3>
                 <p>Before, during and after funeral arrangements, for families, churches and funeral organisers.</p>
                 <ul class="checklist checklist--2"><li>Pre-funeral cleaning</li><li>Guest-area preparation</li><li>Cleaning during arrangements</li><li>Post-funeral deep clean</li><li>Kitchen support</li><li>Waste management</li></ul>
-                <a class="link-arrow" href="/family-care.html#bereavement">Explore Bereavement Care</a>
+                <a class="link-arrow" href="/family-care.html#bereavement" data-demo-wa="Hello Exquisite Cleaners, I'd like to know more about Bereavement Care." data-demo-label="Ask about Bereavement Care on WhatsApp">Explore Bereavement Care</a>
               </div>
             </div>
             <div class="finder__panel" role="tabpanel" id="panel-wedding" aria-labelledby="tab-wedding" hidden>
@@ -234,7 +229,7 @@
                 <h3 class="h3">After the celebration.</h3>
                 <p>Post-event cleaning and home recovery for newlyweds and their families.</p>
                 <ul class="checklist checklist--2"><li>Post-wedding cleaning</li><li>Guest-room cleaning</li><li>Laundry</li><li>Gift organisation</li><li>Kitchen cleaning</li><li>Waste removal</li></ul>
-                <a class="link-arrow" href="/family-care.html#wedding">Explore Wedding Recovery</a>
+                <a class="link-arrow" href="/family-care.html#wedding" data-demo-wa="Hello Exquisite Cleaners, I'd like to know more about Wedding Recovery." data-demo-label="Ask about Wedding Recovery on WhatsApp">Explore Wedding Recovery</a>
               </div>
             </div>
             <div class="finder__panel" role="tabpanel" id="panel-travel" aria-labelledby="tab-travel" hidden>
@@ -244,7 +239,7 @@
                 <h3 class="h3">Come home to fresh.</h3>
                 <p>We prepare your home before you land, after business trips, holidays or long stays abroad.</p>
                 <ul class="checklist checklist--2"><li>Deep cleaning</li><li>Fresh bedding</li><li>Grocery stocking</li><li>Fridge preparation</li><li>Home airing</li><li>Optional welcome touches</li></ul>
-                <a class="link-arrow" href="/family-care.html#travel">Explore Return From Travel</a>
+                <a class="link-arrow" href="/family-care.html#travel" data-demo-wa="Hello Exquisite Cleaners, I'd like to know more about Return From Travel." data-demo-label="Ask about Return From Travel on WhatsApp">Explore Return From Travel</a>
               </div>
             </div>
             <div class="finder__panel" role="tabpanel" id="panel-festival" aria-labelledby="tab-festival" hidden>
@@ -254,7 +249,7 @@
                 <h3 class="h3">Ready for guests.</h3>
                 <p>Get the whole home ready for Christmas, Easter, Eid, Homowo and family occasions.</p>
                 <ul class="checklist checklist--2"><li>Deep cleaning</li><li>Window cleaning</li><li>Carpet cleaning</li><li>Upholstery cleaning</li><li>Guest-room preparation</li><li>Outdoor cleaning</li></ul>
-                <a class="link-arrow" href="/family-care.html#festival">Explore Festival Prep</a>
+                <a class="link-arrow" href="/family-care.html#festival" data-demo-wa="Hello Exquisite Cleaners, I'd like to know more about Festival Preparation." data-demo-label="Ask about Festival Preparation on WhatsApp">Explore Festival Prep</a>
               </div>
             </div>
           </div>
@@ -262,17 +257,17 @@
       </section>
 
       <!-- MASK REVEAL -->
-      <section class="mask-reveal section--dark" aria-labelledby="mask-title">
+      <section class="mask-reveal section--dark" id="maintenance" aria-labelledby="mask-title">
         <div class="mask-reveal__media"><x-img name="living" alt="Calm, clean living room" sizes="100vw"></x-img></div>
         <div class="mask-reveal__copy">
           <span class="eyebrow" data-reveal>Whole-property care</span>
           <h2 id="mask-title" class="h2" data-split>One trusted company, caring for <em>everything</em> you own.</h2>
-          <a class="btn btn--gold" href="/property-maintenance.html" data-reveal data-magnetic>Property maintenance</a>
+          <a class="btn btn--gold" href="/property-maintenance.html" data-demo-wa="Hello Exquisite Cleaners, I'd like to ask about property maintenance." data-demo-label="Ask about maintenance" data-reveal data-magnetic>Property maintenance</a>
         </div>
       </section>
 
       <!-- DIASPORA -->
-      <section class="section section--deep" aria-labelledby="diaspora-title">
+      <section class="section section--deep" id="diaspora" aria-labelledby="diaspora-title">
         <div class="container diaspora">
           <div class="diaspora__copy">
             <span class="eyebrow" data-reveal>For Ghanaians abroad</span>
@@ -293,7 +288,7 @@
       </section>
 
       <!-- PRICING -->
-      <section class="section section--light" aria-labelledby="pricing-title">
+      <section class="section section--light" id="pricing" aria-labelledby="pricing-title">
         <div class="container">
           <div class="pricing-bar">
             <div class="section-head" style="margin:0">
@@ -335,7 +330,7 @@
       </section>
 
       <!-- WHY US -->
-      <section class="section section--dark adinkra" aria-labelledby="why-title">
+      <section class="section section--dark adinkra" id="why" aria-labelledby="why-title">
         <div class="container">
           <div class="section-head section-head--center">
             <span class="eyebrow" data-reveal>Why Exquisite</span>
@@ -367,7 +362,7 @@
       </section>
 
       <!-- FAQ -->
-      <section class="section section--light-2" aria-labelledby="faq-title">
+      <section class="section section--light-2" id="faq" aria-labelledby="faq-title">
         <div class="container container--narrow">
           <div class="section-head section-head--center">
             <span class="eyebrow" data-reveal>Questions</span>

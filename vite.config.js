@@ -1,10 +1,13 @@
 import { defineConfig } from 'vite';
 import { resolve, basename } from 'node:path';
 import { readFileSync, writeFileSync, rmSync } from 'node:fs';
+import { SITE_URL } from './src/js/config.js';
+import { demoTarget } from './src/js/demo-links.js';
 
 const pages = ['index', 'services', 'family-care', 'airbnb', 'property-maintenance', 'about', 'contact'];
 
 const partial = (name) => readFileSync(resolve(import.meta.dirname, `src/partials/${name}.html`), 'utf8');
+const attr = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
 
 // Responsive <x-img name="living" alt="…" sizes="…" class="…" loading="eager"> → <img srcset> of the WebP set in public/images.
 function expandImages(html) {
@@ -18,6 +21,31 @@ function expandImages(html) {
   });
 }
 
+/* Customer preview only: rewrite every link to a page that isn't published.
+   - data-demo-wa="message" (+ optional data-demo-label) → WhatsApp with that message
+   - booking links (/contact.html?service=…) → WhatsApp naming the service
+   - everything else → the matching homepage section (+ data-tab to open a care-package tab)
+   WhatsApp links keep a real fallback href (#contact) and get the number at runtime from config.js. */
+function rewriteDemoLinks(html) {
+  return html.replace(/<a\b([^>]*)>([\s\S]*?)<\/a>/g, (whole, attrs, inner) => {
+    const get = (k) => (attrs.match(new RegExp(`\\s${k}="([^"]*)"`)) || [])[1];
+    const strip = (a, k) => a.replace(new RegExp(`\\s${k}="[^"]*"`), '');
+    const demoWa = get('data-demo-wa');
+    const label = get('data-demo-label');
+    let next = strip(strip(attrs, 'data-demo-wa'), 'data-demo-label');
+    if (demoWa) {
+      next = strip(next, 'href') + ` href="#contact" data-wa="${attr(demoWa)}" target="_blank" rel="noopener"`;
+      return `<a${next}>${label || inner}</a>`;
+    }
+    const t = demoTarget(get('href'), { nav: /\sdata-nav="/.test(attrs) });
+    if (!t) return whole;
+    next = strip(next, 'href') + ` href="${t.href}"`;
+    if (t.wa) next += ` data-wa="${attr(t.wa)}" target="_blank" rel="noopener"`;
+    if (t.tab) next += ` data-tab="${t.tab}"`;
+    return `<a${next}>${inner}</a>`;
+  });
+}
+
 function partials(demo) {
   return {
     name: 'ec-partials',
@@ -26,19 +54,44 @@ function partials(demo) {
       handler(html, ctx) {
         const page = basename(ctx.filename, '.html');
         const header = partial('header').replaceAll(`data-nav="${page}"`, `data-nav="${page}" aria-current="page"`);
+        let head = partial('head');
         if (demo) {
           // Customer preview: mark the page, and keep it out of search engines.
-          html = html
-            .replace('<html lang="en">', '<html lang="en" data-demo>')
-            .replace('<!-- @include head -->', '<meta name="robots" content="noindex, nofollow">\n    <!-- @include head -->');
+          html = html.replace('<html lang="en">', '<html lang="en" data-demo>');
+          head = '<meta name="robots" content="noindex, nofollow">\n    ' + head;
+        } else if (SITE_URL) {
+          head = `<link rel="canonical" href="${SITE_URL}/${page === 'index' ? '' : page + '.html'}">\n    ` + head;
         }
-        return expandImages(
+        html = expandImages(
           html
-            .replace('<!-- @include head -->', partial('head'))
+            .replace('<!-- @include head -->', head)
             .replace('<!-- @include header -->', header)
             .replace('<!-- @include footer -->', partial('footer'))
         );
+        return demo ? rewriteDemoLinks(html) : html.replace(/\sdata-demo-(wa|label)="[^"]*"/g, '');
       },
+    },
+  };
+}
+
+// robots.txt for every build; the sitemap only once the real domain is set in config.js.
+function seoFiles(demo, outDir) {
+  return {
+    name: 'ec-seo-files',
+    closeBundle() {
+      const out = resolve(import.meta.dirname, outDir);
+      rmSync(resolve(out, 'sitemap.xml'), { force: true });
+      if (demo) {
+        writeFileSync(resolve(out, 'robots.txt'), 'User-agent: *\nDisallow: /\n');
+        return;
+      }
+      let robots = 'User-agent: *\nAllow: /\n';
+      if (SITE_URL) {
+        const urls = pages.map((p) => `  <url><loc>${SITE_URL}/${p === 'index' ? '' : p + '.html'}</loc></url>`).join('\n');
+        writeFileSync(resolve(out, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`);
+        robots += `Sitemap: ${SITE_URL}/sitemap.xml\n`;
+      }
+      writeFileSync(resolve(out, 'robots.txt'), robots);
     },
   };
 }
@@ -47,25 +100,17 @@ function partials(demo) {
 // for showing the design to a customer without exposing the other pages.
 export default defineConfig(({ mode }) => {
   const demo = mode === 'demo';
-  // The preview hides from search engines and doesn't list the other pages.
-  const demoCleanup = {
-    name: 'ec-demo-cleanup',
-    closeBundle() {
-      const out = resolve(import.meta.dirname, 'preview-dist');
-      rmSync(resolve(out, 'sitemap.xml'), { force: true });
-      writeFileSync(resolve(out, 'robots.txt'), 'User-agent: *\nDisallow: /\n');
-    },
-  };
+  const outDir = demo ? 'preview-dist' : 'dist';
   return {
-  plugins: demo ? [partials(demo), demoCleanup] : [partials(demo)],
-  build: {
-    outDir: demo ? 'preview-dist' : 'dist',
-    target: 'es2020',
-    chunkSizeWarningLimit: 700,
-    cssCodeSplit: true,
-    rollupOptions: {
-      input: Object.fromEntries((demo ? ['index'] : pages).map((p) => [p, resolve(import.meta.dirname, `${p}.html`)])),
+    plugins: [partials(demo), seoFiles(demo, outDir)],
+    build: {
+      outDir,
+      target: 'es2020',
+      chunkSizeWarningLimit: 700,
+      cssCodeSplit: true,
+      rollupOptions: {
+        input: Object.fromEntries((demo ? ['index'] : pages).map((p) => [p, resolve(import.meta.dirname, `${p}.html`)])),
+      },
     },
-  },
   };
 });
