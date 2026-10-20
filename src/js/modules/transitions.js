@@ -32,6 +32,31 @@ export function initIntro() {
   });
 }
 
+/* Customer preview build (npm run build:preview): only the home page exists, so links to
+   the other pages show a short "coming soon" note instead of a broken page. */
+const demo = root.hasAttribute('data-demo');
+
+function isOtherPage(a) {
+  const url = new URL(a.href, location.href);
+  return url.origin === location.origin && !['/', '/index.html'].includes(url.pathname);
+}
+
+let toastTimer;
+function showComingSoon() {
+  let toast = document.querySelector('.demo-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.className = 'demo-toast';
+    toast.setAttribute('role', 'status');
+    toast.innerHTML = '<strong>Full site coming soon</strong><span>This is a design preview of the home page.</span>';
+    document.body.append(toast);
+  }
+  gsap.killTweensOf(toast);
+  gsap.fromTo(toast, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: 'expo.out' });
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => gsap.to(toast, { y: 20, opacity: 0, duration: 0.4 }), 2600);
+}
+
 export function initPageTransitions(lenis) {
   const panel = document.querySelector('.wipe__panel');
   const logo = document.querySelector('.wipe__logo');
@@ -39,6 +64,7 @@ export function initPageTransitions(lenis) {
   document.addEventListener('click', (e) => {
     const a = e.target.closest('a');
     if (!a) return;
+    if (demo && isOtherPage(a)) { e.preventDefault(); showComingSoon(); return; }
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
     if (a.target === '_blank' || a.hasAttribute('download')) return;
     const url = new URL(a.href, location.href);

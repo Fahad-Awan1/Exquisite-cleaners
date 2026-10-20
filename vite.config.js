@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import { resolve, basename } from 'node:path';
-import { readFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, rmSync } from 'node:fs';
 
 const pages = ['index', 'services', 'family-care', 'airbnb', 'property-maintenance', 'about', 'contact'];
 
@@ -18,7 +18,7 @@ function expandImages(html) {
   });
 }
 
-function partials() {
+function partials(demo) {
   return {
     name: 'ec-partials',
     transformIndexHtml: {
@@ -26,6 +26,12 @@ function partials() {
       handler(html, ctx) {
         const page = basename(ctx.filename, '.html');
         const header = partial('header').replaceAll(`data-nav="${page}"`, `data-nav="${page}" aria-current="page"`);
+        if (demo) {
+          // Customer preview: mark the page, and keep it out of search engines.
+          html = html
+            .replace('<html lang="en">', '<html lang="en" data-demo>')
+            .replace('<!-- @include head -->', '<meta name="robots" content="noindex, nofollow">\n    <!-- @include head -->');
+        }
         return expandImages(
           html
             .replace('<!-- @include head -->', partial('head'))
@@ -37,14 +43,29 @@ function partials() {
   };
 }
 
-export default defineConfig({
-  plugins: [partials()],
+// `npm run build:preview` (mode "demo") builds only the home page into preview-dist/,
+// for showing the design to a customer without exposing the other pages.
+export default defineConfig(({ mode }) => {
+  const demo = mode === 'demo';
+  // The preview hides from search engines and doesn't list the other pages.
+  const demoCleanup = {
+    name: 'ec-demo-cleanup',
+    closeBundle() {
+      const out = resolve(import.meta.dirname, 'preview-dist');
+      rmSync(resolve(out, 'sitemap.xml'), { force: true });
+      writeFileSync(resolve(out, 'robots.txt'), 'User-agent: *\nDisallow: /\n');
+    },
+  };
+  return {
+  plugins: demo ? [partials(demo), demoCleanup] : [partials(demo)],
   build: {
+    outDir: demo ? 'preview-dist' : 'dist',
     target: 'es2020',
     chunkSizeWarningLimit: 700,
     cssCodeSplit: true,
     rollupOptions: {
-      input: Object.fromEntries(pages.map((p) => [p, resolve(import.meta.dirname, `${p}.html`)])),
+      input: Object.fromEntries((demo ? ['index'] : pages).map((p) => [p, resolve(import.meta.dirname, `${p}.html`)])),
     },
   },
+  };
 });
