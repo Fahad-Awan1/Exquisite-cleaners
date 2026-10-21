@@ -91,6 +91,17 @@ if (heroStage && !lowPower) {
   else window.addEventListener('load', schedule, { once: true });
 }
 
+// 3D photo ring (Exquisite Ventures gallery): loaded when it's about to scroll into view.
+const ring = document.querySelector('[data-ring]');
+if (ring) {
+  const io = new IntersectionObserver(([e]) => {
+    if (!e.isIntersecting) return;
+    io.disconnect();
+    import('./modules/ring.js').then((m) => m.initRing(ring, reduceMotion));
+  }, { rootMargin: '800px 0px' });
+  io.observe(ring);
+}
+
 // Diaspora globe (canvas 2D): only loaded when it's about to scroll into view.
 const globe = document.querySelector('[data-globe]');
 if (globe) {
