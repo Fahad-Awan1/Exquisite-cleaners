@@ -67,5 +67,5 @@ export function initDrawer(lenis) {
   // A menu link to a section on this page: close the menu, then let the page scroll there.
   drawer.addEventListener('click', (e) => { if (open && e.target.closest('a[href^="#"]')) set(false); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && open) { set(false); burger.focus(); } });
-  window.matchMedia('(min-width: 1100px)').addEventListener('change', (e) => { if (e.matches && open) set(false); });
+  window.matchMedia('(min-width: 1280px)').addEventListener('change', (e) => { if (e.matches && open) set(false); });
 }
