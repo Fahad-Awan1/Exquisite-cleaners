@@ -110,14 +110,14 @@ function partials(demo) {
 }
 
 // robots.txt for every build; the sitemap only once the real domain is set in config.js.
-function seoFiles(demo, outDir) {
+function seoFiles(demo, outDir, ventures) {
   return {
     name: 'ec-seo-files',
     closeBundle() {
       const out = resolve(import.meta.dirname, outDir);
       rmSync(resolve(out, 'sitemap.xml'), { force: true });
       // The cleaners builds don't use the Exquisite Ventures images that live in public/.
-      if (!outDir.startsWith('ventures')) rmSync(resolve(out, 'images/ventures'), { recursive: true, force: true });
+      if (!ventures) rmSync(resolve(out, 'images/ventures'), { recursive: true, force: true });
       if (demo) {
         writeFileSync(resolve(out, 'robots.txt'), 'User-agent: *\nDisallow: /\n');
         return;
@@ -163,13 +163,21 @@ function venturesOutput(outDir) {
 
 // `npm run build:preview` (mode "demo") builds only the home page into preview-dist/,
 // for showing the design to a customer without exposing the other pages.
+/* Which site to build:
+   - npm run build             -> cleaners site (7 pages) in dist/
+   - npm run build:preview     -> cleaners home-only preview in preview-dist/
+   - npm run build:ventures    -> Exquisite Ventures one-pager in ventures-dist/
+   - On Vercel, a deploy from the Exquisite-ventures repo (or SITE=ventures) builds the Ventures
+     one-pager into dist/ with the default build command, so that repo needs no special settings. */
+const venturesByEnv = process.env.SITE === 'ventures' || /ventures/i.test(process.env.VERCEL_GIT_REPO_SLUG || '');
+
 export default defineConfig(({ mode }) => {
   const demo = mode === 'demo';
-  const ventures = mode === 'ventures';
-  const outDir = demo ? 'preview-dist' : ventures ? 'ventures-dist' : 'dist';
+  const ventures = !demo && (mode === 'ventures' || venturesByEnv);
+  const outDir = demo ? 'preview-dist' : mode === 'ventures' ? 'ventures-dist' : 'dist';
   const input = ventures ? ['ventures'] : demo ? ['index'] : pages;
   return {
-    plugins: [partials(demo), seoFiles(demo, outDir), ...(ventures ? [venturesOutput(outDir)] : [])],
+    plugins: [partials(demo), seoFiles(demo, outDir, ventures), ...(ventures ? [venturesOutput(outDir)] : [])],
     build: {
       outDir,
       target: 'es2020',
