@@ -95,7 +95,8 @@ export function initHero3D(stage, reduceMotion = false) {
   const coin = new Group();
   const R = 2.05;
   let ready = false;
-  const tex = new TextureLoader().load('/images/emblem-512.webp', () => (ready = true));
+  // Coin face: data-emblem on the stage picks the logo (Exquisite Ventures uses its own).
+  const tex = new TextureLoader().load(stage.dataset.emblem || '/images/emblem-512.webp', () => (ready = true));
   tex.colorSpace = SRGBColorSpace;
   const face = new Mesh(new CircleGeometry(R, 64), new MeshBasicMaterial({ map: tex }));
   face.position.z = 0.081;

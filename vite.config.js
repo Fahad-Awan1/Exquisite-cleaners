@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import { resolve, basename } from 'node:path';
-import { readFileSync, writeFileSync, rmSync } from 'node:fs';
+import { readFileSync, writeFileSync, rmSync, renameSync, readdirSync } from 'node:fs';
 import { SITE_URL, PREVIEW } from './src/js/config.js';
 import { demoTarget } from './src/js/demo-links.js';
 
@@ -72,6 +72,16 @@ function partials(demo) {
         const page = basename(ctx.filename, '.html');
         const header = partial('header').replaceAll(`data-nav="${page}"`, `data-nav="${page}" aria-current="page"`);
         let head = partial('head');
+        // The Exquisite Ventures page shares head/scripts/styles but has its own icons and partials
+        // (<!-- @include ventures-header --> etc.).
+        if (page === 'ventures') {
+          head = head
+            .replace('href="/favicon.png"', 'href="/images/ventures/favicon.png"')
+            .replace('href="/apple-touch-icon.png"', 'href="/images/ventures/apple-touch-icon.png"')
+            .replace('content="/images/og-image.jpg"', 'content="/images/ventures/og-image.jpg"')
+            .replace('<meta property="og:site_name" content="Exquisite Cleaners">', '<meta property="og:site_name" content="Exquisite Ventures">');
+          html = html.replace(/<!-- @include (ventures-[\w-]+) -->/g, (_, name) => partial(name));
+        }
         if (demo) {
           // Customer preview: mark the page, and keep it out of search engines.
           html = html.replace('<html lang="en">', '<html lang="en" data-demo>');
@@ -100,6 +110,8 @@ function seoFiles(demo, outDir) {
     closeBundle() {
       const out = resolve(import.meta.dirname, outDir);
       rmSync(resolve(out, 'sitemap.xml'), { force: true });
+      // The cleaners builds don't use the Exquisite Ventures images that live in public/.
+      if (!outDir.startsWith('ventures')) rmSync(resolve(out, 'images/ventures'), { recursive: true, force: true });
       if (demo) {
         writeFileSync(resolve(out, 'robots.txt'), 'User-agent: *\nDisallow: /\n');
         return;
@@ -115,20 +127,50 @@ function seoFiles(demo, outDir) {
   };
 }
 
+/* `npm run build:ventures` (mode "ventures"): the Exquisite Ventures one-page site, built from
+   ventures.html into ventures-dist/index.html. Only the images it actually uses are kept. */
+function venturesOutput(outDir) {
+  return {
+    name: 'ec-ventures-output',
+    closeBundle() {
+      const out = resolve(import.meta.dirname, outDir);
+      renameSync(resolve(out, 'ventures.html'), resolve(out, 'index.html'));
+      const used = new Set();
+      const scan = (file) => {
+        for (const m of readFileSync(file, 'utf8').matchAll(/\/images\/[\w\/.-]+\.(?:webp|png|jpe?g|svg)/g)) used.add(m[0]);
+      };
+      scan(resolve(out, 'index.html'));
+      for (const f of readdirSync(resolve(out, 'assets'))) if (/\.(js|css)$/.test(f)) scan(resolve(out, 'assets', f));
+      const walk = (dir, rel) => {
+        for (const e of readdirSync(dir, { withFileTypes: true })) {
+          const p = resolve(dir, e.name);
+          if (e.isDirectory()) walk(p, `${rel}/${e.name}`);
+          else if (!used.has(`${rel}/${e.name}`)) rmSync(p);
+        }
+      };
+      walk(resolve(out, 'images'), '/images');
+      for (const f of ['favicon.png', 'apple-touch-icon.png']) rmSync(resolve(out, f), { force: true });
+      console.log(`[ventures] kept ${used.size} images`);
+    },
+  };
+}
+
 // `npm run build:preview` (mode "demo") builds only the home page into preview-dist/,
 // for showing the design to a customer without exposing the other pages.
 export default defineConfig(({ mode }) => {
   const demo = mode === 'demo';
-  const outDir = demo ? 'preview-dist' : 'dist';
+  const ventures = mode === 'ventures';
+  const outDir = demo ? 'preview-dist' : ventures ? 'ventures-dist' : 'dist';
+  const input = ventures ? ['ventures'] : demo ? ['index'] : pages;
   return {
-    plugins: [partials(demo), seoFiles(demo, outDir)],
+    plugins: [partials(demo), seoFiles(demo, outDir), ...(ventures ? [venturesOutput(outDir)] : [])],
     build: {
       outDir,
       target: 'es2020',
       chunkSizeWarningLimit: 700,
       cssCodeSplit: true,
       rollupOptions: {
-        input: Object.fromEntries((demo ? ['index'] : pages).map((p) => [p, resolve(import.meta.dirname, `${p}.html`)])),
+        input: Object.fromEntries(input.map((p) => [p, resolve(import.meta.dirname, `${p}.html`)])),
       },
     },
   };

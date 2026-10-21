@@ -3,12 +3,14 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import Lenis from 'lenis';
 
-import { CONTACT, SOCIAL, waLink } from './config.js';
+import { CONTACT, ACTIVE_SOCIAL, IS_VENTURES, VENTURES, waLink } from './config.js';
 import { initIntro, initPageTransitions } from './modules/transitions.js';
 import { initHeader, initDrawer } from './modules/nav.js';
 import { initAnimations } from './modules/animations.js';
 import { initCurrency } from './modules/currency.js';
 import { initChat } from './modules/chatbot.js';
+import { cleanersBot } from './chat/cleaners-bot.js';
+import { venturesBot } from './chat/ventures-bot.js';
 import { initInteractions } from './modules/interactions.js';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
@@ -45,17 +47,19 @@ if (CONTACT.email) {
 }
 // Social icons appear only once their URL is set.
 $all('[data-social]').forEach((a) => {
-  const url = SOCIAL[a.dataset.social];
+  const url = ACTIVE_SOCIAL[a.dataset.social];
   if (url) { a.href = url; a.hidden = false; } else a.remove();
 });
 $all('[data-socials]').forEach((box) => (box.hidden = !box.querySelector('a')));
-document.querySelectorAll('[data-hours]').forEach((el) => (el.textContent = CONTACT.hours));
+// Links to the sister site (Exquisite Ventures page → Exquisite Cleaners), from config.
+$all('[data-cleaners-link]').forEach((a) => (a.href = VENTURES.cleanersUrl));
+document.querySelectorAll('[data-hours]').forEach((el) => (CONTACT.hours ? (el.textContent = CONTACT.hours) : el.remove()));
 document.querySelectorAll('[data-year]').forEach((el) => (el.textContent = new Date().getFullYear()));
 
 initHeader(lenis);
 initDrawer(lenis);
 initCurrency();
-initChat(lenis);
+initChat(lenis, IS_VENTURES ? venturesBot : cleanersBot);
 initInteractions(lenis, reduceMotion);
 initPageTransitions(lenis);
 

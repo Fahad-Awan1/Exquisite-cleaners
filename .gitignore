@@ -1,6 +1,7 @@
 node_modules
 dist
 preview-dist
+ventures-dist
 .DS_Store
 *.log
 .vite

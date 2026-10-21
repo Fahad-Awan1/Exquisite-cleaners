@@ -27,19 +27,37 @@ export const PREVIEW = {
   currencyToggle: false, // false = no GH₵/£/$ switch, prices shown in GH₵ only
 };
 
-// The preview build marks its <html> with data-demo. (Guarded: this file is also read by vite.config.js.)
-const isPreview = typeof document !== 'undefined' && document.documentElement.hasAttribute('data-demo');
-const ACTIVE_WHATSAPP = isPreview && PREVIEW.whatsappNumber ? PREVIEW.whatsappNumber : WHATSAPP_NUMBER;
+// Exquisite Ventures one-page site (ventures.html, npm run build:ventures).
+export const VENTURES = {
+  whatsappNumber: '27728408296', // +27 72 840 8296
+  phoneDisplay: '+27 72 840 8296',
+  email: '',
+  social: {
+    facebook: 'https://www.facebook.com/ExquisiteVenturesGh/',
+    instagram: 'https://www.instagram.com/exquisiteventuresgh/',
+    tiktok: '',
+  },
+  // Opened in a new tab from the Ventures page.
+  cleanersUrl: 'https://exquisite-cleaners.vercel.app/',
+};
+
+// Which page is running: <html data-site="ventures"> marks the Ventures page, <html data-demo> the
+// cleaners customer preview. (Guarded: this file is also read by vite.config.js in Node.)
+const root = typeof document !== 'undefined' ? document.documentElement : null;
+export const IS_VENTURES = !!root && root.dataset.site === 'ventures';
+const isPreview = !!root && root.hasAttribute('data-demo');
+
+let ACTIVE_WHATSAPP = WHATSAPP_NUMBER;
+if (IS_VENTURES) ACTIVE_WHATSAPP = VENTURES.whatsappNumber;
+else if (isPreview && PREVIEW.whatsappNumber) ACTIVE_WHATSAPP = PREVIEW.whatsappNumber;
 export const CURRENCY_TOGGLE = !(isPreview && !PREVIEW.currencyToggle);
 
-export const CONTACT = {
-  whatsapp: ACTIVE_WHATSAPP,
-  phone: PHONE_DISPLAY,
-  phoneHref: `+${WHATSAPP_NUMBER}`,
-  email: EMAIL,
-  hours: 'Mon – Sat · 7:00 – 19:00',
-  city: 'Accra, Ghana',
-};
+export const CONTACT = IS_VENTURES
+  ? { whatsapp: ACTIVE_WHATSAPP, phone: VENTURES.phoneDisplay, phoneHref: `+${VENTURES.whatsappNumber}`, email: VENTURES.email, hours: '', city: 'Accra, Ghana' }
+  : { whatsapp: ACTIVE_WHATSAPP, phone: PHONE_DISPLAY, phoneHref: `+${WHATSAPP_NUMBER}`, email: EMAIL, hours: 'Mon – Sat · 7:00 – 19:00', city: 'Accra, Ghana' };
+
+// Social links for whichever site is running.
+export const ACTIVE_SOCIAL = IS_VENTURES ? VENTURES.social : SOCIAL;
 
 // Indicative prices are stored in Ghana cedis; other currencies are converted with these rates.
 export const CURRENCIES = {

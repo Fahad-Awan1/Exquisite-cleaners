@@ -24,10 +24,16 @@ const slerp = (a, b, t) => {
   return [a[0] * k1 + b[0] * k2, a[1] * k1 + b[1] * k2, a[2] * k1 + b[2] * k2];
 };
 
+/* Optional data-globe-config='{"cities":[{"name","lat","lon","dx","dy","align"}], "view":[lonDeg, latDeg]}'
+   on the element swaps the routes and the starting view (the centre longitude and latitude). */
 export function initGlobe(el, reduceMotion) {
+  let config = {};
+  try { config = JSON.parse(el.dataset.globeConfig || '{}'); } catch (e) { /* keep defaults */ }
+  const cities = config.cities || CITIES;
+  const [viewLon, viewLat] = config.view || [-28, 22];
   const canvas = document.createElement('canvas');
   canvas.setAttribute('role', 'img');
-  canvas.setAttribute('aria-label', 'Globe with routes from London, New York, Toronto, Berlin and Houston to Accra, Ghana');
+  canvas.setAttribute('aria-label', `Globe with routes from ${cities.map((c) => c.name).join(', ')} to Accra, Ghana`);
   el.appendChild(canvas);
   const ctx = canvas.getContext('2d');
 
@@ -41,7 +47,7 @@ export function initGlobe(el, reduceMotion) {
     dots.push([Math.cos(golden * i) * r, y, Math.sin(golden * i) * r]);
   }
   const accra = toVec(ACCRA.lat, ACCRA.lon);
-  const routes = CITIES.map((c, i) => ({ ...c, v: toVec(c.lat, c.lon), offset: i * 0.22 }));
+  const routes = cities.map((c, i) => ({ ...c, v: toVec(c.lat, c.lon), offset: i * 0.22 }));
 
   let W = 0, H = 0, R = 0, dpr = 1;
   const resize = () => {
@@ -55,8 +61,8 @@ export function initGlobe(el, reduceMotion) {
   new ResizeObserver(resize).observe(el);
 
   // View: centred between Ghana and the North Atlantic.
-  let rotY = rad(-28);
-  const tilt = rad(22);
+  let rotY = rad(viewLon);
+  const tilt = rad(viewLat);
   let drag = null, velocity = 0;
 
   const project = (v) => {
@@ -177,7 +183,7 @@ export function initGlobe(el, reduceMotion) {
 
   let visible = false;
   new IntersectionObserver(([e]) => (visible = e.isIntersecting), { rootMargin: '100px' }).observe(el);
-  const base = rad(-28);
+  const base = rad(viewLon);
   let lastFrame = 0;
   const loop = (t) => {
     requestAnimationFrame(loop);

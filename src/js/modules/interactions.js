@@ -14,6 +14,64 @@ export function initInteractions(lenis, reduceMotion) {
   initFinder(reduceMotion);
   initFlips();
   initBookingForm();
+  initGallery(reduceMotion);
+}
+
+/* Photo gallery lightbox: [data-gallery] holds <button data-full="…"> thumbnails.
+   Arrows / swipe to move, Esc or the backdrop to close. */
+function initGallery(reduceMotion) {
+  const gallery = document.querySelector('[data-gallery]');
+  const box = document.querySelector('[data-lightbox]');
+  if (!gallery || !box) return;
+  const items = $$('[data-full]', gallery);
+  const img = box.querySelector('img');
+  const count = box.querySelector('[data-lightbox-count]');
+  let index = 0;
+  let opener = null;
+
+  const show = (i, dir = 0) => {
+    index = (i + items.length) % items.length;
+    const item = items[index];
+    img.src = item.dataset.full;
+    img.alt = item.querySelector('img')?.alt || '';
+    count.textContent = `${index + 1} / ${items.length}`;
+    if (!reduceMotion) gsap.fromTo(img, { opacity: 0, x: dir * 40, scale: 0.97 }, { opacity: 1, x: 0, scale: 1, duration: 0.5, ease: 'expo.out' });
+  };
+  const open = (i, from) => {
+    opener = from;
+    box.hidden = false;
+    document.body.style.overflow = 'hidden';
+    window.__lenis?.stop();
+    show(i);
+    if (!reduceMotion) gsap.fromTo(box, { opacity: 0 }, { opacity: 1, duration: 0.35 });
+    box.querySelector('[data-lightbox-close]').focus();
+  };
+  const close = () => {
+    box.hidden = true;
+    document.body.style.overflow = '';
+    window.__lenis?.start();
+    opener?.focus({ preventScroll: true });
+  };
+
+  items.forEach((item, i) => item.addEventListener('click', () => open(i, item)));
+  box.querySelector('[data-lightbox-close]').addEventListener('click', close);
+  box.querySelector('[data-lightbox-prev]').addEventListener('click', () => show(index - 1, -1));
+  box.querySelector('[data-lightbox-next]').addEventListener('click', () => show(index + 1, 1));
+  box.addEventListener('click', (e) => { if (e.target === box) close(); });
+  document.addEventListener('keydown', (e) => {
+    if (box.hidden) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowRight') show(index + 1, 1);
+    if (e.key === 'ArrowLeft') show(index - 1, -1);
+  });
+  let startX = null;
+  box.addEventListener('touchstart', (e) => (startX = e.touches[0].clientX), { passive: true });
+  box.addEventListener('touchend', (e) => {
+    if (startX === null) return;
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 50) show(index + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1);
+    startX = null;
+  });
 }
 
 /* 3D tilt that follows the pointer */
@@ -140,8 +198,8 @@ function initBookingForm() {
 
   const params = new URLSearchParams(location.search);
   const service = params.get('service');
-  if (service) {
-    const select = form.querySelector('[name="service"]');
+  const select = form.querySelector('select[name="service"]');
+  if (service && select) {
     const opt = Array.from(select.options).find((o) => o.value === service);
     if (opt) select.value = service;
   }
@@ -161,6 +219,20 @@ function initBookingForm() {
     if (firstInvalid) { firstInvalid.focus(); return; }
 
     const data = new FormData(form);
+    // data-booking="generic": the message is built from every filled-in field and its label,
+    // opened by data-intro (used by the Exquisite Ventures contact form).
+    if (form.dataset.booking === 'generic') {
+      const fields = $$('input, select, textarea', form).filter((el) => el.name && el.value.trim() && el.type !== 'radio' && el.type !== 'checkbox');
+      const lines = [form.dataset.intro || 'Hello,', ...fields.map((el) => {
+        const label = form.querySelector(`label[for="${el.id}"]`)?.textContent.replace(/\s*\*$/, '').trim() || el.name;
+        return `• ${label}: ${el.value.trim()}`;
+      })];
+      window.open(waLink(lines.join('\n')), '_blank', 'noopener');
+      status.textContent = 'Thank you! WhatsApp has opened with your message. Just press send and we’ll reply shortly.';
+      status.hidden = false;
+      gsap.fromTo(status, { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'expo.out' });
+      return;
+    }
     const lines = [
       'Hello Exquisite Cleaners, I would like to book:',
       `• Service: ${data.get('service')}`,
