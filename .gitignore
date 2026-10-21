@@ -5,3 +5,4 @@ ventures-dist
 .DS_Store
 *.log
 .vite
+dist-debug
