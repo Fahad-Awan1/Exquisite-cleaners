@@ -824,32 +824,35 @@ body.drawer-open .action-bar, body.drawer-open .chat { visibility: hidden; }
 @keyframes glow-drift { from { transform: translate(0, 0) scale(1); } to { transform: translate(8vw, 6vh) scale(1.15); } }
 @media (prefers-reduced-motion: reduce) { .showcase__glow { animation: none; } .showcase .card::after { display: none; } }
 
-/* 3D photo ring (Ventures gallery) */
-/* The turning photos sit in 3D space and would otherwise widen the page sideways on phones. */
+/* Photo wheel (Ventures gallery): an upright Ferris-wheel of photos */
+/* The wheel's photos must never widen the page sideways on phones. */
 .ring-section { overflow: hidden; }
 .ring {
-  --w: clamp(118px, 15vw, 210px); --h: calc(var(--w) * 1.3);
-  position: relative; height: calc(var(--h) * 1.95); display: grid; place-items: center;
-  perspective: 1600px; perspective-origin: 50% 40%; touch-action: pan-y; user-select: none; -webkit-user-select: none;
-  cursor: grab; margin-top: 8px;
+  --w: clamp(96px, 11vw, 150px); --h: calc(var(--w) * 1.3);
+  position: relative; height: clamp(560px, 64vw, 820px); margin-top: 8px;
+  touch-action: pan-y; user-select: none; -webkit-user-select: none; cursor: grab;
 }
 .ring.is-dragging { cursor: grabbing; }
-.ring__spinner { position: relative; width: var(--w); height: var(--h); transform-style: preserve-3d; will-change: transform; }
+.ring__spinner { position: absolute; inset: 0; }
 .ring .gallery__item {
-  position: absolute; inset: 0; width: var(--w); height: var(--h); margin: 0; border-radius: 16px;
-  box-shadow: 0 0 0 1px rgba(243, 217, 139, .45), 0 18px 40px rgba(0, 0, 0, .45); backface-visibility: visible;
-  transition: box-shadow .4s;
+  position: absolute; left: 50%; top: 50%; width: var(--w); height: var(--h); margin: 0; border-radius: 16px;
+  box-shadow: 0 0 0 1px rgba(243, 217, 139, .45), 0 16px 34px rgba(0, 0, 0, .45);
+  transition: box-shadow .4s; will-change: transform;
 }
 .ring .gallery__item img { width: 100%; height: 100%; object-fit: cover; -webkit-user-drag: none; }
+.ring .gallery__item.is-front { box-shadow: 0 0 0 2px var(--gold-300), 0 0 40px rgba(243, 217, 139, .35), 0 22px 50px rgba(0, 0, 0, .5); }
 .ring .gallery__item:hover, .ring .gallery__item:focus-visible { box-shadow: 0 0 0 2px var(--gold-300), 0 22px 50px rgba(0, 0, 0, .5); }
-/* Gold "track" the photos stand on */
-.ring::after {
-  content: ''; position: absolute; left: 50%; bottom: 4%; width: min(calc(var(--r, 400px) * 2.1), 96%); height: calc(var(--h) * .32);
-  transform: translateX(-50%); border-radius: 50%; pointer-events: none;
-  border: 1px solid rgba(243, 217, 139, .4);
-  background: radial-gradient(ellipse at center, rgba(233, 201, 122, .22), rgba(233, 201, 122, 0) 70%);
-  box-shadow: 0 0 60px rgba(201, 162, 74, .25);
+/* Hub: gold rim + spokes that turn with the wheel, EV emblem in the middle */
+.ring__hub { position: absolute; left: 50%; top: 50%; translate: -50% -50%; pointer-events: none; display: grid; place-items: center; }
+.ring__spokes { display: block; overflow: visible; will-change: transform; }
+.ring__spokes line { stroke: rgba(243, 217, 139, .22); stroke-width: 1; }
+.ring__spokes circle { fill: none; stroke: rgba(243, 217, 139, .45); stroke-width: 1.5; stroke-dasharray: 2 6; }
+.ring__emblem {
+  position: absolute; width: clamp(64px, 8vw, 110px); height: auto; border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(243, 217, 139, .6), 0 0 50px rgba(201, 162, 74, .35);
+  animation: hub-glow 4s ease-in-out infinite;
 }
+@keyframes hub-glow { 50% { box-shadow: 0 0 0 1px rgba(243, 217, 139, .9), 0 0 80px rgba(201, 162, 74, .55); } }
 .ring__controls { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 18px; }
 .ring__btn {
   width: 48px; height: 48px; flex-shrink: 0; border-radius: 50%; display: grid; place-items: center;
@@ -858,4 +861,10 @@ body.drawer-open .action-bar, body.drawer-open .chat { visibility: hidden; }
 .ring__btn:hover { background: rgba(243, 217, 139, .14); }
 .ring__btn:active { transform: scale(.92); }
 .ring__hint { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--mist); text-align: center; }
-@media (max-width: 639px) { .ring { --w: 25vw; height: calc(var(--h) * 2.35); perspective: 820px; } .ring__hint { font-size: 10.5px; letter-spacing: .1em; } }
+@media (max-width: 639px) {
+  .ring { --w: 25vw; height: 118vw; }
+  /* Phones: 12 photos fit round the wheel; the viewer still shows all 18 */
+  .ring .gallery__item:nth-child(n+13) { display: none; }
+  .ring__hint { font-size: 10.5px; letter-spacing: .1em; }
+}
+@media (prefers-reduced-motion: reduce) { .ring__emblem { animation: none; } }
