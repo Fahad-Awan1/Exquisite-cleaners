@@ -21,8 +21,19 @@ export const SOCIAL = {
 // canonical tags, the sitemap and the domain in robots.txt are only generated when it's set.
 export const SITE_URL = '';
 
+// Customer preview only (npm run build:preview / deploy:preview). The full site ignores these.
+export const PREVIEW = {
+  whatsappNumber: '27728408296', // +27 72 840 8296, used by every WhatsApp button in the preview
+  currencyToggle: false, // false = no GH₵/£/$ switch, prices shown in GH₵ only
+};
+
+// The preview build marks its <html> with data-demo. (Guarded: this file is also read by vite.config.js.)
+const isPreview = typeof document !== 'undefined' && document.documentElement.hasAttribute('data-demo');
+const ACTIVE_WHATSAPP = isPreview && PREVIEW.whatsappNumber ? PREVIEW.whatsappNumber : WHATSAPP_NUMBER;
+export const CURRENCY_TOGGLE = !(isPreview && !PREVIEW.currencyToggle);
+
 export const CONTACT = {
-  whatsapp: WHATSAPP_NUMBER,
+  whatsapp: ACTIVE_WHATSAPP,
   phone: PHONE_DISPLAY,
   phoneHref: `+${WHATSAPP_NUMBER}`,
   email: EMAIL,
@@ -49,4 +60,4 @@ export const PRICES = {
 };
 
 export const waLink = (text = '') =>
-  `https://wa.me/${WHATSAPP_NUMBER}${text ? `?text=${encodeURIComponent(text)}` : ''}`;
+  `https://wa.me/${ACTIVE_WHATSAPP}${text ? `?text=${encodeURIComponent(text)}` : ''}`;

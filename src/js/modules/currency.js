@@ -1,5 +1,5 @@
 import { gsap } from 'gsap';
-import { CURRENCIES } from '../config.js';
+import { CURRENCIES, CURRENCY_TOGGLE } from '../config.js';
 
 const KEY = 'ec-currency';
 
@@ -19,7 +19,8 @@ const format = (ghs, code) => {
 
 // Every [data-price="350"] shows that cedi amount in the chosen currency.
 export function initCurrency() {
-  let current = CURRENCIES[read()] ? read() : 'GHS';
+  // Without the toggle (customer preview), prices are always shown in cedis.
+  let current = CURRENCY_TOGGLE && CURRENCIES[read()] ? read() : 'GHS';
 
   const apply = (code, animate) => {
     current = code;

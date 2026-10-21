@@ -1,4 +1,4 @@
-import { CONTACT, CURRENCIES, PRICES, waLink } from '../config.js';
+import { CONTACT, CURRENCIES, CURRENCY_TOGGLE, PRICES, waLink } from '../config.js';
 import { demoTarget } from '../demo-links.js';
 
 /* ------------------------------------------------------------------
@@ -9,7 +9,7 @@ import { demoTarget } from '../demo-links.js';
 
 const price = (ghs) => {
   let code = 'GHS';
-  try { code = localStorage.getItem('ec-currency') || 'GHS'; } catch (e) { /* ignore */ }
+  if (CURRENCY_TOGGLE) { try { code = localStorage.getItem('ec-currency') || 'GHS'; } catch (e) { /* ignore */ } }
   const c = CURRENCIES[code] || CURRENCIES.GHS;
   const v = ghs * c.rate;
   return c.symbol + (code === 'GHS' ? Math.round(v / 10) * 10 : Math.round(v)).toLocaleString('en-GB');
@@ -97,7 +97,7 @@ const INTENTS = [
   {
     id: 'prices',
     keys: ['price', 'prices', 'cost', 'how much', 'quote', 'rate', 'charge', 'fee', 'expensive', 'cheap', 'budget', 'family care price'],
-    reply: () => `Here are our sample starting prices:\n• Regular home clean: from ${price(PRICES.regular)}\n• Deep clean: from ${price(PRICES.deep)}\n• Move-in / move-out: from ${price(PRICES.moveout)}\n• Carpet & upholstery: from ${price(PRICES.carpet)}\n• Airbnb turnover: from ${price(PRICES.airbnb)}\n• Family Care: from ${price(PRICES.familyCare)} per month\n\nFinal price after a free quote. You can switch currency at the top of the page.\n[[Get a free quote on WhatsApp|${waLink("Hello Exquisite Cleaners, I'd like a free quote.")}]]`,
+    reply: () => `Here are our sample starting prices:\n• Regular home clean: from ${price(PRICES.regular)}\n• Deep clean: from ${price(PRICES.deep)}\n• Move-in / move-out: from ${price(PRICES.moveout)}\n• Carpet & upholstery: from ${price(PRICES.carpet)}\n• Airbnb turnover: from ${price(PRICES.airbnb)}\n• Family Care: from ${price(PRICES.familyCare)} per month\n\nFinal price after a free quote.${CURRENCY_TOGGLE ? ' You can switch currency at the top of the page.' : ''}\n[[Get a free quote on WhatsApp|${waLink("Hello Exquisite Cleaners, I'd like a free quote.")}]]`,
     chips: ['Book a clean', 'Office cleaning', 'Talk to a person'],
   },
   {

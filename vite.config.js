@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 import { resolve, basename } from 'node:path';
 import { readFileSync, writeFileSync, rmSync } from 'node:fs';
-import { SITE_URL } from './src/js/config.js';
+import { SITE_URL, PREVIEW } from './src/js/config.js';
 import { demoTarget } from './src/js/demo-links.js';
 
 const pages = ['index', 'services', 'family-care', 'airbnb', 'property-maintenance', 'about', 'contact'];
@@ -46,6 +46,23 @@ function rewriteDemoLinks(html) {
   });
 }
 
+/* Customer preview with PREVIEW.currencyToggle = false: drop the GH₵/£/$ switches and reword
+   the copy that talks about pounds and dollars, so the page only speaks in cedis. */
+const GHS_ONLY_COPY = [
+  ['Pay in the currency <em>you live in.</em>', 'Clear prices, <em>no surprises.</em>'],
+  ['usually the same day, in cedis, pounds or dollars.', 'usually the same day.'],
+  [' Pounds and dollars are approximate conversions.', ''],
+  ['Prices on the site can be shown in cedis, pounds or dollars. ', 'Prices on the site are shown in Ghana cedis (GH₵). '],
+];
+function cedisOnly(html) {
+  html = html.replace(/<div data-currency-switch[^>]*>[\s\S]*?<\/div>/g, '');
+  for (const [from, to] of GHS_ONLY_COPY) {
+    if (!html.includes(from)) console.warn(`[preview] currency copy not found, check GHS_ONLY_COPY: "${from}"`);
+    html = html.replace(from, to);
+  }
+  return html;
+}
+
 function partials(demo) {
   return {
     name: 'ec-partials',
@@ -68,7 +85,9 @@ function partials(demo) {
             .replace('<!-- @include header -->', header)
             .replace('<!-- @include footer -->', partial('footer'))
         );
-        return demo ? rewriteDemoLinks(html) : html.replace(/\sdata-demo-(wa|label)="[^"]*"/g, '');
+        if (!demo) return html.replace(/\sdata-demo-(wa|label)="[^"]*"/g, '');
+        html = rewriteDemoLinks(html);
+        return PREVIEW.currencyToggle ? html : cedisOnly(html);
       },
     },
   };
