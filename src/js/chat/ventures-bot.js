@@ -38,8 +38,8 @@ const INTENTS = [
   },
   {
     id: 'partners',
-    keys: ['partner', 'partners', 'brands', 'brand', 'zidela', 'carmien', 'clos malverne', 'sezabe', 'kegau', 'cedarberg', 'our partners'],
-    reply: () => 'We’re proud to work with brands including Zidela, Carmien, Clos Malverne, Sezabe, Kegau and Cedarberg Aqua.\n[See our partners](#partners)',
+    keys: ['partner', 'partners', 'brands', 'brand', 'zidela', 'carmien', 'clos malverne', 'kegau', 'safer solution', 'our partners'],
+    reply: () => 'We’re proud to work with partners including Zidela, Carmien, Clos Malverne, Kegau and Safer Solution.\n[See our partners](#partners)',
     chips: ['Products we import', 'Get a quote'],
   },
   {

@@ -226,8 +226,9 @@ function servicesShowcase() {
       scrollTrigger: { trigger: grid, start: 'top 90%', end: 'top 30%', scrub: 0.8, invalidateOnRefresh: true },
     });
     cards.forEach((card, i) => {
+      gsap.set(card, { zIndex: cards.length - Math.round(Math.abs(i - mid)) }); // stacking set once, not animated
       tl.fromTo(card,
-        { x: () => toCentre(card), y: 70 + Math.abs(i - mid) * 18, rotation: (i - mid) * 8, scale: 0.84, transformOrigin: '50% 120%', zIndex: cards.length - Math.round(Math.abs(i - mid)) },
+        { x: () => toCentre(card), y: 70 + Math.abs(i - mid) * 18, rotation: (i - mid) * 8, scale: 0.84, transformOrigin: '50% 120%' },
         { x: 0, y: 0, rotation: 0, scale: 1, ease: 'power2.out' }, 0);
     });
   });

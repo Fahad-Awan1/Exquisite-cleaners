@@ -44,6 +44,10 @@ export function initRing(ring, reduceMotion) {
   };
 
   // Position every photo on the circle. 0° is the bottom (front) of the wheel.
+  // Only transform and opacity change every frame (the GPU handles those). Stacking order
+  // and the "front" highlight are written only when they actually change, because those
+  // make the browser repaint.
+  const last = new Map();
   const render = () => {
     for (let i = 0; i < n; i++) {
       const deg = i * step + state.angle;
@@ -53,21 +57,37 @@ export function initRing(ring, reduceMotion) {
       const front = (Math.cos(a) + 1) / 2; // 1 at the bottom, 0 at the top
       const scale = 0.55 + 0.45 * front ** 1.2;
       const el = items[i];
-      el.style.transform = `translate(-50%, -50%) translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) scale(${scale.toFixed(3)})`;
-      el.style.zIndex = String(Math.round(front * 100));
-      el.style.opacity = (0.45 + 0.55 * front ** 1.4).toFixed(3);
-      el.classList.toggle('is-front', front > 0.985);
+      el.style.transform = `translate(-50%, -50%) translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) scale(${scale.toFixed(3)})`;
+      el.style.opacity = (0.45 + 0.55 * front ** 1.4).toFixed(2);
+      const z = Math.round(front * n); // n levels is enough to keep the order right
+      const isFront = front > 0.985;
+      const prev = last.get(el);
+      if (!prev || prev.z !== z) el.style.zIndex = String(z);
+      if (!prev || prev.isFront !== isFront) el.classList.toggle('is-front', isFront);
+      last.set(el, { z, isFront });
     }
-    spokes.style.transform = `rotate(${-state.angle}deg)`;
+    spokes.style.transform = `rotate(${(-state.angle).toFixed(2)}deg)`;
   };
 
   // Continuous turning + momentum, only while the wheel is on screen.
+  // Phones redraw the wheel 30 times a second (it turns slowly, so it looks the same) to halve
+  // the work; motion is scaled by the real time between frames so the speed doesn't change.
+  const frameGap = window.matchMedia('(pointer: coarse)').matches ? 1000 / 31 : 0;
+  let lastFrame = 0;
+  let dragX = null; // set while a finger / mouse button is down on the wheel
+  let dragging = false;
+  let holdUntil = 0; // after ‹ › or keyboard focus, the chosen photo stays at the front for a moment
   gsap.ticker.add(() => {
     if (!visible || tween) return;
+    const now = performance.now();
+    if (now < holdUntil || dragging) { lastFrame = now; return; } // while dragging, the finger moves the wheel 1:1
+    if (now - lastFrame < frameGap) return;
+    const dt = lastFrame ? Math.min(3, (now - lastFrame) / 16.67) : 1;
+    lastFrame = now;
     const target = hovering ? cruise * 0.25 : cruise;
-    state.velocity += (target - state.velocity) * 0.04;
+    state.velocity += (target - state.velocity) * (1 - Math.pow(0.96, dt));
     if (Math.abs(state.velocity) < 0.0005 && !cruise) return;
-    state.angle += state.velocity;
+    state.angle += state.velocity * dt;
     render();
   });
   new IntersectionObserver(([e]) => (visible = e.isIntersecting), { rootMargin: '100px' }).observe(ring);
@@ -95,7 +115,6 @@ export function initRing(ring, reduceMotion) {
   }
 
   // Drag / swipe sideways to turn the wheel; vertical swipes keep scrolling the page.
-  let dragX = null;
   let lastX = 0;
   let moved = 0;
   ring.addEventListener('pointerdown', (e) => {
@@ -103,6 +122,7 @@ export function initRing(ring, reduceMotion) {
     tween?.kill();
     tween = null;
     dragX = lastX = e.clientX;
+    dragging = true;
     moved = 0;
   });
   window.addEventListener('pointermove', (e) => {
@@ -118,6 +138,7 @@ export function initRing(ring, reduceMotion) {
   const endDrag = () => {
     if (dragX === null) return;
     dragX = null;
+    dragging = false; // let go: the last movement carries on as momentum
     ring.classList.remove('is-dragging');
   };
   window.addEventListener('pointerup', endDrag);
@@ -139,7 +160,7 @@ export function initRing(ring, reduceMotion) {
     tween = gsap.to(state, {
       angle: target, duration: reduceMotion ? 0.01 : 0.9, ease: 'expo.out',
       onUpdate: render,
-      onComplete: () => { tween = null; state.velocity = 0; },
+      onComplete: () => { tween = null; state.velocity = 0; holdUntil = performance.now() + 2500; },
     });
   };
   const current = () => ((Math.round(-state.angle / step) % n) + n) % n;

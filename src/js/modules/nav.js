@@ -18,16 +18,18 @@ export function initHeader(lenis) {
   const state = { scrolled: null, hidden: null, barHidden: null };
   const set = (el, key, cls, val) => { if (state[key] !== val) { state[key] = val; el.classList.toggle(cls, val); } };
 
+  let y = window.scrollY;
   const update = () => {
     ticking = false;
-    const y = window.scrollY;
     set(header, 'scrolled', 'is-scrolled', y > 40);
     if (!document.body.classList.contains('drawer-open')) set(header, 'hidden', 'is-hidden', y > last && y > 400);
     // Keep the mobile action bar out of the way near the footer.
     if (bar) set(bar, 'barHidden', 'is-hidden', viewH + y > pageH - 140);
     last = y;
   };
-  const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+  // Read scrollY in the scroll event, where layout is up to date; reading it inside the frame
+  // after GSAP has written styles would force an extra layout pass.
+  const onScroll = () => { y = window.scrollY; if (!ticking) { ticking = true; requestAnimationFrame(update); } };
   update();
   window.addEventListener('scroll', onScroll, { passive: true });
 }

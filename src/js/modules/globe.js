@@ -38,7 +38,7 @@ export function initGlobe(el, reduceMotion) {
   const ctx = canvas.getContext('2d');
 
   // Evenly spaced dots (Fibonacci sphere).
-  const N = window.innerWidth < 700 ? 650 : 1100;
+  const N = window.innerWidth < 700 ? 450 : 1100;
   const dots = [];
   const golden = Math.PI * (3 - Math.sqrt(5));
   for (let i = 0; i < N; i++) {
@@ -188,7 +188,7 @@ export function initGlobe(el, reduceMotion) {
   const loop = (t) => {
     requestAnimationFrame(loop);
     if (!visible || document.hidden) return;
-    if (t - lastFrame < 1000 / 31) return; // 30 fps is plenty for a slow globe
+    if (t - lastFrame < (window.innerWidth < 700 ? 1000 / 25 : 1000 / 31)) return; // a slow globe needs only 24-30 fps
     lastFrame = t;
     if (drag === null && !reduceMotion) {
       velocity *= 0.95;

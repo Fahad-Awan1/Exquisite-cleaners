@@ -78,7 +78,7 @@ export function initHero3D(stage, reduceMotion = false) {
   } catch (e) {
     return; // no WebGL: the CSS fallback emblem stays
   }
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, isSmall ? 1.25 : 1.5));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, isSmall ? 1 : 1.5)); // phones: 1x is sharp enough for a small coin
   renderer.outputColorSpace = SRGBColorSpace;
   host.appendChild(renderer.domElement);
 
@@ -128,7 +128,7 @@ export function initHero3D(stage, reduceMotion = false) {
   world.add(star);
 
   // Iridescent soap bubbles (one instanced draw call).
-  const bubbleCount = isSmall ? 10 : 18;
+  const bubbleCount = isSmall ? 7 : 18;
   const bubbles = new InstancedMesh(
     new SphereGeometry(1, 20, 14),
     new MeshMatcapMaterial({
@@ -173,7 +173,7 @@ export function initHero3D(stage, reduceMotion = false) {
   g.fillStyle = grad;
   g.fillRect(0, 0, 32, 32);
   const dust = new Points(dustGeo, new PointsMaterial({ size: 0.1, map: new CanvasTexture(c), transparent: true, depthWrite: false, blending: AdditiveBlending }));
-  scene.add(dust);
+  if (!isSmall) scene.add(dust); // the gold dust is a desktop-only extra
 
   // Sizing.
   const resize = () => {

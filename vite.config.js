@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import { resolve, basename } from 'node:path';
-import { readFileSync, writeFileSync, rmSync, renameSync, readdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, rmSync, renameSync, readdirSync, existsSync } from 'node:fs';
 import { SITE_URL, PREVIEW } from './src/js/config.js';
 import { demoTarget } from './src/js/demo-links.js';
 
@@ -81,6 +81,12 @@ function partials(demo) {
             .replace('content="/images/og-image.jpg"', 'content="/images/ventures/og-image.jpg"')
             .replace('<meta property="og:site_name" content="Exquisite Cleaners">', '<meta property="og:site_name" content="Exquisite Ventures">');
           html = html.replace(/<!-- @include (ventures-[\w-]+) -->/g, (_, name) => partial(name));
+          // Leave out partner tiles whose logo hasn't been supplied yet (no broken images).
+          html = html.replace(/\s*<span(?: aria-hidden="true")?><span class="logo-tile"><img src="(\/images\/ventures\/partner-[\w-]+\.webp)"[^>]*><\/span><\/span>/g, (tile, src) => {
+            if (existsSync(resolve(import.meta.dirname, 'public' + src))) return tile;
+            if (!tile.includes('aria-hidden')) console.warn(`[ventures] partner logo missing, tile skipped: public${src}`);
+            return '';
+          });
         }
         if (demo) {
           // Customer preview: mark the page, and keep it out of search engines.

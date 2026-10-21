@@ -47,11 +47,11 @@ const partners = {
   zidela: 'Capturez-f34ec05e2a482301b326f8838a09b4b9.png',
   carmien: 'Carmien-logo-5d3abe1cd1ad8876b8a59cd30edec0bd.png',
   'clos-malverne': 'ClosMalverneStlbschLlogo-9f5b001931b4d03b637fd17b11199a91.gif',
-  sezabe: 'Drawing6-1-150f4ed3a5ed7e38adbf9b24bf86c86e.png',
   kegau: 'a1448f58-2f87-4a50-8918-d618afdb0354-ca78cf7dec51a36f12cc04694d47c820.jpg',
-  'cedarberg-aqua': 'cedarberg-aqua-a01eb85ff2b9bdabdd07b0a2e9b7bf02.png',
+  'safer-solution': 'safer-solution.png', // supplied by the client
 };
 for (const [name, f] of Object.entries(partners)) {
+  if (!fs.existsSync(`${RAW}/${f}`)) { console.warn(`! partner logo missing: ${RAW}/${f}`); continue; }
   const logo = await sharp(`${RAW}/${f}`, { animated: false }).resize({ width: 300, height: 170, fit: 'inside' }).toBuffer();
   await sharp({ create: { width: 360, height: 220, channels: 4, background: '#ffffff' } })
     .composite([{ input: logo, gravity: 'center' }])
