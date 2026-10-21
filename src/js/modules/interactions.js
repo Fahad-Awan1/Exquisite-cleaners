@@ -29,11 +29,35 @@ function initGallery(reduceMotion) {
   let index = 0;
   let opener = null;
 
+  // Full-size photos are fetched in the background; neighbours are fetched ahead of time.
+  const cache = new Map();
+  const fetchFull = (i) => {
+    const url = items[(i + items.length) % items.length].dataset.full;
+    if (!cache.has(url)) {
+      const pre = new Image();
+      pre.decoding = 'async';
+      pre.src = url;
+      cache.set(url, pre);
+    }
+    return cache.get(url);
+  };
+
   const show = (i, dir = 0) => {
     index = (i + items.length) % items.length;
     const item = items[index];
-    img.src = item.dataset.full;
-    img.alt = item.querySelector('img')?.alt || '';
+    const thumb = item.querySelector('img');
+    const full = fetchFull(index);
+    // Show the thumbnail that is already on screen straight away, then swap in the sharp
+    // full-size photo as soon as it has arrived (instantly if it was fetched ahead).
+    if (full.complete && full.naturalWidth) img.src = full.src;
+    else {
+      img.src = thumb?.currentSrc || thumb?.src || '';
+      const want = index;
+      full.addEventListener('load', () => { if (index === want && !box.hidden) img.src = full.src; }, { once: true });
+    }
+    fetchFull(index + 1);
+    fetchFull(index - 1);
+    img.alt = thumb?.alt || '';
     count.textContent = `${index + 1} / ${items.length}`;
     if (!reduceMotion) gsap.fromTo(img, { opacity: 0, x: dir * 40, scale: 0.97 }, { opacity: 1, x: 0, scale: 1, duration: 0.5, ease: 'expo.out' });
   };

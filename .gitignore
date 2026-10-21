@@ -6,3 +6,4 @@ ventures-dist
 *.log
 .vite
 dist-debug
+.vercel
