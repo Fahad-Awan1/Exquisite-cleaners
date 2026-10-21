@@ -800,3 +800,26 @@ body.drawer-open .action-bar, body.drawer-open .chat { visibility: hidden; }
 /* Service list inside a card */
 .card .tags { margin-top: 4px; }
 .card .tags li { font-size: 12px; padding: 6px 12px; color: var(--ink-soft); }
+
+/* Services showcase (Ventures page): dealt-out cards, gold shine sweep, drifting glows */
+.showcase { overflow: hidden; isolation: isolate; }
+.showcase .cards { position: relative; }
+.showcase .card { will-change: transform; }
+.showcase .card::after {
+  content: ''; position: absolute; inset: 0; z-index: 3; pointer-events: none;
+  background: linear-gradient(115deg, transparent 30%, rgba(255, 240, 200, .55) 48%, rgba(243, 217, 139, .25) 52%, transparent 70%);
+  transform: translateX(-130%);
+}
+.showcase .card.is-shown::after { animation: card-shine 1.5s .55s var(--ease) both; }
+@media (hover: hover) { .showcase .card.is-shown:hover::after { animation: card-shine-again 1.1s var(--ease); } }
+@keyframes card-shine { to { transform: translateX(130%); } }
+@keyframes card-shine-again { from { transform: translateX(-130%); } to { transform: translateX(130%); } }
+.showcase__glow {
+  position: absolute; z-index: -1; width: clamp(260px, 40vw, 520px); aspect-ratio: 1; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle, rgba(233, 201, 122, .28), rgba(233, 201, 122, 0) 68%);
+  animation: glow-drift 14s ease-in-out infinite alternate;
+}
+.showcase__glow--a { top: -8%; left: -10%; }
+.showcase__glow--b { bottom: -12%; right: -8%; animation-duration: 18s; animation-delay: -6s; }
+@keyframes glow-drift { from { transform: translate(0, 0) scale(1); } to { transform: translate(8vw, 6vh) scale(1.15); } }
+@media (prefers-reduced-motion: reduce) { .showcase__glow { animation: none; } .showcase .card::after { display: none; } }

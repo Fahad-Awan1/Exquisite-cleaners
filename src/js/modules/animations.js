@@ -50,6 +50,7 @@ export function initAnimations({ reduceMotion }) {
     beforeAfter();
     horizontalProcess();
     bigWords();
+    servicesShowcase();
   }
 
   if (isTouch) touchEffects(reduceMotion);
@@ -202,6 +203,61 @@ function beforeAfter() {
     .to(after, { opacity: 1, duration: 0.2 }, 0.8)
     .to(sparkles, { opacity: 1, scale: 1, rotate: 90, duration: 0.15, stagger: 0.05, ease: 'back.out(3)' }, 0.85)
     .to(sparkles, { opacity: 0, scale: 0.4, duration: 0.15, stagger: 0.05 }, 1.05);
+}
+
+/* Services showcase ([data-showcase]):
+   - wide screens: the cards start as a fanned deck in the middle and are dealt out into
+     their places as you scroll (scrolling back gathers them again);
+   - phones/tablets: each card swings in, in 3D, from alternating sides;
+   - everywhere: when a card arrives its photo wipes up into view, a gold shine sweeps
+     across it, the number badge spins in and the text slides in line by line. */
+function servicesShowcase() {
+  const sec = document.querySelector('[data-showcase]');
+  if (!sec) return;
+  const grid = sec.querySelector('.cards');
+  const cards = $$('.card', grid);
+  const mid = (cards.length - 1) / 2;
+  const mm = gsap.matchMedia();
+
+  mm.add('(min-width: 1100px)', () => {
+    // Distance from each card's slot to the centre of the grid (offsetLeft ignores transforms).
+    const toCentre = (card) => grid.offsetWidth / 2 - (card.offsetLeft + card.offsetWidth / 2);
+    const tl = gsap.timeline({
+      scrollTrigger: { trigger: grid, start: 'top 90%', end: 'top 30%', scrub: 0.8, invalidateOnRefresh: true },
+    });
+    cards.forEach((card, i) => {
+      tl.fromTo(card,
+        { x: () => toCentre(card), y: 70 + Math.abs(i - mid) * 18, rotation: (i - mid) * 8, scale: 0.84, transformOrigin: '50% 120%', zIndex: cards.length - Math.round(Math.abs(i - mid)) },
+        { x: 0, y: 0, rotation: 0, scale: 1, ease: 'power2.out' }, 0);
+    });
+  });
+
+  mm.add('(max-width: 1099px)', () => {
+    cards.forEach((card, i) => {
+      const dir = i % 2 ? 1 : -1;
+      gsap.fromTo(card,
+        { rotateY: dir * 32, x: dir * 60, y: 50, opacity: 0.15, transformPerspective: 1000, transformOrigin: dir > 0 ? '100% 50%' : '0% 50%' },
+        { rotateY: 0, x: 0, y: 0, opacity: 1, ease: 'power2.out', scrollTrigger: { trigger: card, start: 'top 98%', end: 'top 58%', scrub: 0.6 } });
+    });
+  });
+
+  cards.forEach((card) => {
+    const media = card.querySelector('.card__media');
+    const img = media?.querySelector('img');
+    const num = card.querySelector('.card__num');
+    const lines = card.querySelectorAll('.card__tag, .card__title, .card__text, .tags li, .link-arrow');
+    gsap.set(media, { clipPath: 'inset(100% 0% 0% 0%)' });
+    gsap.set(num, { scale: 0, rotation: -180 });
+    gsap.set(lines, { y: 22, opacity: 0 });
+    whenVisible([card], () => {
+      card.classList.add('is-shown');
+      gsap.timeline()
+        .to(media, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.2, ease: 'expo.inOut' })
+        .fromTo(img, { scale: 1.35 }, { scale: 1, duration: 1.6, ease: 'expo.out', clearProps: 'transform' }, 0.1)
+        .to(num, { scale: 1, rotation: 0, duration: 0.9, ease: 'back.out(2)' }, 0.6)
+        .to(lines, { y: 0, opacity: 1, duration: 0.8, stagger: 0.06, ease: 'expo.out', clearProps: 'transform,opacity' }, 0.35);
+    }, { margin: '0px 0px -12% 0px' });
+  });
 }
 
 /* Pinned horizontal process on every screen size. Panels turn in 3D as they slide past the centre. */
