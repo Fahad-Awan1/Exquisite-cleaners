@@ -52,7 +52,9 @@ const partners = {
 };
 for (const [name, f] of Object.entries(partners)) {
   if (!fs.existsSync(`${RAW}/${f}`)) { console.warn(`! partner logo missing: ${RAW}/${f}`); continue; }
-  const logo = await sharp(`${RAW}/${f}`, { animated: false }).resize({ width: 300, height: 170, fit: 'inside' }).toBuffer();
+  // Logos supplied with a wide white margin are trimmed first so they fill the tile like the others.
+  const src = await sharp(`${RAW}/${f}`, { animated: false }).flatten({ background: '#ffffff' }).trim({ background: '#ffffff', threshold: 12 }).toBuffer();
+  const logo = await sharp(src).resize({ width: 300, height: 170, fit: 'inside' }).toBuffer();
   await sharp({ create: { width: 360, height: 220, channels: 4, background: '#ffffff' } })
     .composite([{ input: logo, gravity: 'center' }])
     .webp({ quality: 88 })
