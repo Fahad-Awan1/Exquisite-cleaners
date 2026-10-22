@@ -363,7 +363,10 @@ html.returning .wipe__logo { opacity: 1; animation: fade-out .3s 2.5s forwards; 
 .page-hero .lead { max-width: 620px; }
 .crumbs { display: flex; gap: 10px; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: #d9c08a; }
 .crumbs a:hover { color: var(--gold-300); }
-.page-hero__orb { position: absolute; right: var(--gutter); top: calc(var(--header-h) + 30px); width: clamp(90px, 14vw, 170px); aspect-ratio: 1; border-radius: 50%; box-shadow: 0 0 0 1px rgba(243, 217, 139, .5), 0 20px 60px rgba(0, 0, 0, .5); animation: coin 9s ease-in-out infinite; }
+.page-hero__orb { position: absolute; right: var(--gutter); top: calc(var(--header-h) + 30px); width: clamp(90px, 14vw, 170px); aspect-ratio: 1; border-radius: 50%; box-shadow: 0 0 0 1px rgba(243, 217, 139, .5), 0 20px 60px rgba(0, 0, 0, .5); animation: coin 9s ease-in-out infinite; --orb-y: 0px; translate: 0 var(--orb-y); }
+/* Below desktop the heading block can be taller than the space under the emblem, so room is reserved above it
+   (header + emblem's top offset + emblem + a gap) and the two can never overlap. */
+@media (max-width: 959px) { .page-hero__inner { padding-top: calc(var(--header-h) + 50px + clamp(90px, 14vw, 170px)); } }
 
 /* ---------- Marquee ---------- */
 .marquee { background: var(--grad-gold); color: var(--navy-900); overflow: hidden; padding: 16px 0; position: relative; z-index: 2; }

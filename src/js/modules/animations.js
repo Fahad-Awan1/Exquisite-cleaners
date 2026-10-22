@@ -148,10 +148,12 @@ function heroParallax() {
   });
   const copy = document.querySelector('.hero__copy, .page-hero__inner');
   if (copy) {
-    gsap.to(copy, {
-      yPercent: -18, opacity: 0.2, ease: 'none',
-      scrollTrigger: { trigger: copy.closest('.hero, .page-hero'), start: 'top top', end: 'bottom top', scrub: true },
-    });
+    const scrub = { trigger: copy.closest('.hero, .page-hero'), start: 'top top', end: 'bottom top', scrub: true, invalidateOnRefresh: true };
+    gsap.to(copy, { yPercent: -18, opacity: 0.2, ease: 'none', scrollTrigger: scrub });
+    // The page-hero emblem rises with the heading so the gap between them stays the same while scrolling.
+    // It moves through the CSS `translate` property because its own coin animation owns `transform`.
+    const orb = document.querySelector('.page-hero__orb');
+    if (orb) gsap.to(orb, { '--orb-y': () => `${-copy.offsetHeight * 0.18}px`, ease: 'none', scrollTrigger: { ...scrub } });
   }
 }
 
