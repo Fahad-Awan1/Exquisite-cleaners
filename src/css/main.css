@@ -305,7 +305,6 @@ html.returning .wipe__logo { opacity: 1; animation: fade-out .3s 2.5s forwards; 
 }
 .hero__copy { display: flex; flex-direction: column; gap: 20px; text-align: center; align-items: center; }
 .hero__copy .script { font-size: clamp(36px, 4.6vw, 54px); }
-.hero__copy .hero__title { font-size: clamp(56px, 7vw, 100px); line-height: 1.05; }
 .hero__copy .lead { margin-inline: auto; }
 .hero__actions { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin-top: 8px; }
 .hero__stage { position: relative; order: -1; height: clamp(230px, 58vw, 380px); display: grid; place-items: center; }
@@ -314,7 +313,7 @@ html.returning .wipe__logo { opacity: 1; animation: fade-out .3s 2.5s forwards; 
   .hero__copy { gap: 14px; }
   .hero__copy .lead { font-size: 14.5px; line-height: 1.7; }
 }
-/* Cleaners phones: fewer, calmer elements so the hero breathes: smaller coin and heading, one-sentence intro,
+/* Cleaners phones: fewer, calmer elements so the hero breathes: smaller coin, no long headline, one-sentence intro,
    both buttons on one row, and a darker photo behind the text. */
 @media (max-width: 599px) {
   :root:not([data-site="ventures"]) .hero::before { background: linear-gradient(180deg, rgba(7, 18, 38, .78) 0%, rgba(11, 26, 51, .88) 45%, var(--navy-900) 100%); }
@@ -325,6 +324,8 @@ html.returning .wipe__logo { opacity: 1; animation: fade-out .3s 2.5s forwards; 
   .hero__more { display: none; }
   :root:not([data-site="ventures"]) .hero__copy .eyebrow { font-size: 10.5px; }
   :root:not([data-site="ventures"]) .hero__copy .hero__title { font-size: clamp(40px, 11vw, 46px); margin-top: -2px; }
+  /* The headline stays for screen readers and search engines; on phones "You do, we clean" leads visually. */
+  .hero__headline { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
   :root:not([data-site="ventures"]) .hero__copy .lead { max-width: 30ch; font-size: 14px; color: rgba(232, 236, 244, .78); }
   :root:not([data-site="ventures"]) .hero__actions { flex-wrap: nowrap; gap: 10px; width: 100%; max-width: 340px; margin-top: 12px; }
   :root:not([data-site="ventures"]) .hero__actions .btn { --pad-y: 13px; --pad-x: 12px; flex: 1 1 0; font-size: 13.5px; white-space: nowrap; }
