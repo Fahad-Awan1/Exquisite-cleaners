@@ -3,11 +3,13 @@
 
 const ACCRA = { name: 'Accra', lat: 5.6, lon: -0.19 };
 const CITIES = [
-  { name: 'London', lat: 51.5, lon: -0.13, dx: 10, dy: 16 },
-  { name: 'New York', lat: 40.7, lon: -74, dx: 10, dy: 14 },
+  { name: 'London', lat: 51.5, lon: -0.13, dx: -2, dy: 18, align: 'right' },
+  { name: 'New York', lat: 40.7, lon: -74, dx: 10, dy: 2 },
+  { name: 'Amsterdam', lat: 52.37, lon: 4.9, dx: 0, dy: -10, align: 'center' },
   { name: 'Toronto', lat: 43.65, lon: -79.38, dx: -8, dy: -10, align: 'right' },
-  { name: 'Berlin', lat: 52.5, lon: 13.4, dx: 10, dy: -8 },
-  { name: 'Houston', lat: 29.76, lon: -95.37, dx: -8, dy: 4, align: 'right' },
+  { name: 'Berlin', lat: 52.5, lon: 13.4, dx: 10, dy: 4 },
+  { name: 'Rome', lat: 41.9, lon: 12.5, dx: 10, dy: 5 },
+  { name: 'Houston', lat: 29.76, lon: -95.37, dx: 6, dy: 16 },
 ];
 
 const rad = (d) => (d * Math.PI) / 180;
@@ -47,7 +49,7 @@ export function initGlobe(el, reduceMotion) {
     dots.push([Math.cos(golden * i) * r, y, Math.sin(golden * i) * r]);
   }
   const accra = toVec(ACCRA.lat, ACCRA.lon);
-  const routes = cities.map((c, i) => ({ ...c, v: toVec(c.lat, c.lon), offset: i * 0.22 }));
+  const routes = cities.map((c, i) => ({ ...c, v: toVec(c.lat, c.lon), offset: i / cities.length }));
 
   let W = 0, H = 0, R = 0, dpr = 1;
   const resize = () => {
