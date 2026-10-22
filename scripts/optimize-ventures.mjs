@@ -62,21 +62,28 @@ for (const [name, f] of Object.entries(partners)) {
   console.log('✓ partner', name);
 }
 
-// Logo: the gold EV emblem on navy for the round emblem / 3D coin face, the full lockup for the footer,
-// favicons and the social preview image.
-const emblemSrc = `${RAW}/fav.png`;
-for (const size of [256, 512]) {
-  const mark = await sharp(emblemSrc).resize(Math.round(size * 0.8)).toBuffer();
-  const bg = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}"><defs><radialGradient id="g" cx="40%" cy="35%" r="75%"><stop offset="0" stop-color="#1c3566"/><stop offset="1" stop-color="${NAVY}"/></radialGradient></defs><rect width="100%" height="100%" fill="url(#g)"/></svg>`);
-  await sharp(bg).composite([{ input: mark, gravity: 'center' }]).webp({ quality: 88 }).toFile(path.join(OUT, `emblem-${size}.webp`));
-}
-await sharp(`${RAW}/logo-transnew.png`).resize({ width: 600 }).webp({ quality: 86 }).toFile(path.join(OUT, 'logo-full.webp'));
-const fav = async (size, file) => {
-  const mark = await sharp(emblemSrc).resize(Math.round(size * 0.86)).toBuffer();
-  await sharp({ create: { width: size, height: size, channels: 4, background: NAVY } }).composite([{ input: mark, gravity: 'center' }]).png().toFile(path.join(OUT, file));
+// Logo (ventures-src/logo-ev.png, 1536x1024, navy background): the EV emblem cut out as a square for the
+// round emblem / 3D coin face and favicons, the full lockup for the footer and the social preview image.
+const LOGO = 'ventures-src/logo-ev.png';
+const BG = { r: 1, g: 12, b: 29 }; // the logo's own background colour just below the emblem
+// Square centred on the emblem (x 492-1059, y 113-575) with room to spare, so a round crop never clips it.
+// The wordmark underneath is faded out into the background.
+// fade(size, from): covers everything below logo row 560 (where the emblem ends) in the background colour.
+const fade = (size, top) => {
+  const y = 560 - top, c = `rgb(${BG.r},${BG.g},${BG.b})`;
+  return Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}"><defs><linearGradient id="f" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c}" stop-opacity="0"/><stop offset="${30 / (size - y)}" stop-color="${c}"/></linearGradient></defs><rect y="${y}" width="${size}" height="${size - y}" fill="url(#f)"/></svg>`);
 };
-await fav(48, 'favicon.png');
-await fav(180, 'apple-touch-icon.png');
-const ogMark = await sharp(`${RAW}/logo-transnew.png`).resize({ height: 520 }).toBuffer();
-await sharp({ create: { width: 1200, height: 630, channels: 3, background: NAVY } }).composite([{ input: ogMark, gravity: 'center' }]).jpeg({ quality: 82 }).toFile(path.join(OUT, 'og-image.jpg'));
+const SQ = 700, SQ_LEFT = 425, SQ_TOP = 0;
+const emblem = await sharp(LOGO).extract({ left: SQ_LEFT, top: SQ_TOP, width: SQ, height: SQ }).composite([{ input: fade(SQ, SQ_TOP) }]).png().toBuffer();
+for (const size of [256, 512]) {
+  await sharp(emblem).resize(size).webp({ quality: 88 }).toFile(path.join(OUT, `emblem-${size}.webp`));
+}
+await sharp(LOGO).resize({ width: 600 }).webp({ quality: 86 }).toFile(path.join(OUT, 'logo-full.webp'));
+// Favicons: a tighter crop so the monogram stays readable at 48px.
+const tight = await sharp(LOGO).extract({ left: 476, top: 40, width: 600, height: 600 }).composite([{ input: fade(600, 40) }]).png().toBuffer();
+await sharp(tight).resize(48).png().toFile(path.join(OUT, 'favicon.png'));
+await sharp(tight).resize(180).png().toFile(path.join(OUT, 'apple-touch-icon.png'));
+// Social preview: the full logo at 630px tall, widened to 1200 by repeating its edge pixels (no visible seam).
+const og = await sharp(LOGO).resize({ height: 630 }).toBuffer();
+await sharp(og).extend({ left: 128, right: 127, extendWith: 'copy' }).jpeg({ quality: 82 }).toFile(path.join(OUT, 'og-image.jpg'));
 console.log('✓ logo assets');
