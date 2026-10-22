@@ -63,7 +63,7 @@ const INTENTS = [
   {
     id: 'location',
     keys: ['where', 'location', 'located', 'ghana', 'accra', 'south africa', 'country', 'deliver', 'delivery'],
-    reply: () => `We’re based in ${CONTACT.city} and serve clients across Ghana, working with producers and partners abroad, including South Africa.`,
+    reply: () => `We’re based in ${CONTACT.city} and serve clients across Ghana, working with producers and partners abroad, including South Africa, Germany, Italy and the Netherlands.`,
     chips: ['Products we import', 'Talk to a person'],
   },
   {
