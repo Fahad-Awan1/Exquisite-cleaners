@@ -38,7 +38,7 @@ export const VENTURES = {
     tiktok: '',
   },
   // Opened in a new tab from the Ventures page.
-  cleanersUrl: 'https://exquisite-cleaners.vercel.app/',
+  cleanersUrl: 'https://cleaners.exquisiteventuresgh.com/',
 };
 
 // Which page is running: <html data-site="ventures"> marks the Ventures page, <html data-demo> the
